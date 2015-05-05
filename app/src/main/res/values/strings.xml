@@ -23,4 +23,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_problem_answer">ProblemAnswerActivity</string>
+    <string name="btn1">btn1</string>
+    <string name="btn2">btn2</string>
 </resources>

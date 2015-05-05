@@ -12,4 +12,35 @@
         android:text="@string/problem_answer_txt"
         android:id="@+id/textView2"
         android:layout_gravity="center" />
+
+    <android.support.v4.app.FragmentTabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_alignParentBottom="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+            <FrameLayout
+                android:id="@+id/content"
+                android:layout_alignParentTop="true"
+                android:layout_above="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+        </RelativeLayout>
+    </android.support.v4.app.FragmentTabHost>
+
 </FrameLayout>
