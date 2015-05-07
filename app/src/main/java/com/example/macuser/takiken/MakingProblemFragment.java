@@ -59,9 +59,9 @@ public class MakingProblemFragment extends Fragment {
     }
 
     // FragmentがActivityに関連付けられた時に一度だけ呼ばれる。
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        ((MainActivity) activity).onSectionAttached(getArguments().getInt("MakingProblemASection"));
-//    }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(getArguments().getInt("MakingProblemASection"));
+    }
 }

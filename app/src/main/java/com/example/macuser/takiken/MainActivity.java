@@ -42,23 +42,29 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
+    // サイドバーのタッチ箇所
+    public final static int Home = 0;
+    public final static int ProblemAnswer = 1;
+    public final static int MakingProblem = 2;
+    public final static int Maps = 3;
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(position == 0) {// HOME
+        if(position == Home) {// HOME
             fragmentManager.beginTransaction()
                     .replace(R.id.container, HomeFragment.newInstance(position + 1))
                     .commit();
-        }else if(position == 1) {// 問題解答
+        }else if(position == ProblemAnswer) {// 問題解答
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ProblemAnswerFragment.newInstance(position + 1))
                     .commit();
-        }else if(position == 2) {// 問題作成
+        }else if(position == MakingProblem) {// 問題作成
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MakingProblemFragment.newInstance(position + 1))
                     .commit();
-        }else if(position == 3) {// たきざわMAP
+        }else if(position == Maps) {// たきざわMAP
             Intent intent = new Intent(MainActivity.this, MapsActivity.class);// どのクラスを対象にするか
             startActivity(intent);// 画面遷移
         }else{
@@ -69,17 +75,17 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
+        switch (number - 1) {
+            case Home:
                 mTitle = getString(R.string.title_home);
                 break;
-            case 2:
+            case ProblemAnswer:
                 mTitle = getString(R.string.title_problem_answer);
                 break;
-            case 3:
+            case MakingProblem:
                 mTitle = getString(R.string.title_making_problem);
                 break;
-            case 4:
+            case Maps:
                 mTitle = getString(R.string.title_map);
                 break;
         }
@@ -163,73 +169,3 @@ public class MainActivity extends ActionBarActivity
     }
 
 }
-
-//
-//import android.content.Intent;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentActivity;
-//import android.support.v4.app.FragmentTabHost;
-//import android.support.v7.app.ActionBarActivity;
-//import android.os.Bundle;
-//import android.view.Gravity;
-//import android.view.LayoutInflater;
-//import android.view.Menu;
-//import android.view.MenuItem;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.Button;
-//import android.widget.TabHost;
-//import android.widget.TextView;
-//
-//
-//public class MainActivity extends ActionBarActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        FragmentTabHost host = (FragmentTabHost) findViewById(android.R.id.tabhost);
-//        host.setup(this, getSupportFragmentManager(), R.id.content);
-//
-//        TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
-//        tabSpec1.setIndicator("HOME");
-//        host.addTab(tabSpec1, HomeFragment.class, null);
-//
-//        TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
-//        tabSpec2.setIndicator("問題解答");
-//        host.addTab(tabSpec2, ProblemAnswerFragment.class, null);
-//
-//        TabHost.TabSpec tabSpec3 = host.newTabSpec("tab3");
-//        tabSpec3.setIndicator("問題作成");
-//        host.addTab(tabSpec3, MakingProblemFragment.class, null);
-//
-//        TabHost.TabSpec tabSpec4 = host.newTabSpec("tab4");
-//        tabSpec4.setIndicator("MAP");
-//        host.addTab(tabSpec4, MapsFragment.class, null);
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//
-//}
