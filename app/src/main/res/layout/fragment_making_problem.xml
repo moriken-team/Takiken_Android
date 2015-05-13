@@ -3,16 +3,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.macuser.takiken.MakingProblemFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/making_problem_txt"
-        android:id="@+id/textView3"
-        android:layout_gravity="center" />
-
     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"

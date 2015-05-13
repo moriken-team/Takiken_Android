@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
 
         TabHost.TabSpec tabSpec3 = host.newTabSpec("tab3");
         tabSpec3.setIndicator("ランキング");
-        host.addTab(tabSpec3, MakingProblemFragment.class, null);
+        host.addTab(tabSpec3, SnsFragment.class, null);
 
         return view;
     }

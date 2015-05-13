@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
-    // サイドバーのタッチ箇所
+    // サイドバーのタッチ位置を定数に代入
     public final static int Home = 0;
     public final static int ProblemAnswer = 1;
     public final static int MakingProblem = 2;

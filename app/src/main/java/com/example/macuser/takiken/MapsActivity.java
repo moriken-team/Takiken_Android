@@ -3,6 +3,9 @@ package com.example.macuser.takiken;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +21,8 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
     }
@@ -87,4 +92,5 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(options);
 
     }
+
 }

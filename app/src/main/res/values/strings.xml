@@ -15,14 +15,16 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="home_txt">Home</string>
-    <string name="problem_answer_txt">問題解答</string>
     <string name="title_activity_maps">Map</string>
-    <string name="making_problem_txt">問題作成</string>
     <string name="title_activity_home">HomeActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_problem_answer">ProblemAnswerActivity</string>
     <string name="btn1">btn1</string>
     <string name="btn2">btn2</string>
+
+    <!--問題作成（一問一答）-->
+    <string name="qa_question_txt">問題文</string>
+    <string name="qa_answer_txt">解答</string>
+    <string name="qa_btn">決定</string>
+
 </resources>
