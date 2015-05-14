@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,18 +66,20 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
 //                // エディットテキストのテキストを全選択します
 //                editText.selectAll();
                 // エディットテキストのテキストを取得します
-                String text = question.getText().toString();
-                String text2 = answer.getText().toString();
 
-                Log.v("Button",text);
-                Log.v("Button2",text2);
+                String[] qa_result = new String[2];
 
+                qa_result[0] = question.getText().toString();
+                qa_result[1] = answer.getText().toString();
+
+//                Log.v("Button2", Arrays.toString(qa_result));
 
 
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数
                 Bundle args = new Bundle();
-                args.putString("hoge1", text);
+                args.putString("question", qa_result[0]);
+                args.putString("answer", qa_result[1]);
 
                 // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
                 getLoaderManager().initLoader(LOADER_ID, args, QuestionsAndAnswersFragment.this);
@@ -121,15 +125,17 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     public Loader<String> onCreateLoader(int id, Bundle args) {// 非同期処理を行うLoaderを生成する
         // getLoaderManager().initLoaderで一回のみ呼び出される
 
-        String data = args.getString("hoge1");
-        return new HttpAsyncTaskLoader(getActivity(), data);
+        String question = args.getString("question");
+        String answer = args.getString("answer");
+
+        return new HttpAsyncTaskLoader(getActivity(), question, answer);
     }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {// 非同期処理完了時
         // ここでView等にデータをセット
 
-        Log.v("tag", data);
+        Log.v("API response", data);
     }
 
     @Override

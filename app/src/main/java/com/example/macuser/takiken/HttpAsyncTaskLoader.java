@@ -2,6 +2,7 @@ package com.example.macuser.takiken;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,13 +31,15 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     /** 引数 */
     private String mArg;
+    private String mArg2;
 
     /** 非同期処理での結果を格納 */
     private String mData;
 
-    public HttpAsyncTaskLoader(Context context, String arg) {
+    public HttpAsyncTaskLoader(Context context, String arg, String arg2) {
         super(context);
         this.mArg = arg;
+        this.mArg2 = arg2;
     }
 
     @Override
@@ -64,8 +67,8 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
         value.add( new BasicNameValuePair("type", "2"));
         value.add( new BasicNameValuePair("grade", "1"));
         value.add( new BasicNameValuePair("number", "1"));
-        value.add( new BasicNameValuePair("sentence", "012345"));
-        value.add( new BasicNameValuePair("right_answer", "012345"));
+        value.add( new BasicNameValuePair("sentence", mArg));
+        value.add( new BasicNameValuePair("right_answer", mArg2));
         value.add( new BasicNameValuePair("description", "012345"));
         value.add( new BasicNameValuePair("public_flag", "1"));
         value.add( new BasicNameValuePair("category_id", "1"));
@@ -85,10 +88,14 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
             e.printStackTrace();
         }
 
+        Log.v("mArg", mArg);
+        Log.v("mArg2", mArg2);
+
 //        return mData;
 //        mArg = "成功";
-//        return mArg;
-
+//          mData = mArg;
+//        return mData;
+//
        return body;
     }
 
