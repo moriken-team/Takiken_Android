@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by macuser on 15/05/13.
@@ -40,6 +41,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
         super(context);
         this.mArg = arg;
         this.mArg2 = arg2;
+
     }
 
     @Override
@@ -74,10 +76,13 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
         value.add( new BasicNameValuePair("category_id", "1"));
         value.add( new BasicNameValuePair("item", "1"));
 
+//        Log.v("mArg", );
+
+
         String body = null;
 
         try {
-            post.setEntity(new UrlEncodedFormEntity(value));
+            post.setEntity(new UrlEncodedFormEntity(value, "UTF-8"));
             // リクエスト送信
             HttpResponse response = client.execute(post);
             // 取得

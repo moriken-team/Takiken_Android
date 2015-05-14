@@ -112,19 +112,20 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
 //
 //        /**
 //         * ★Loaderの操作メソッド
-//         * ○getLoaderManager().getLoader(LOADER_ID).startLoading()
+//         *・getLoaderManager().initLoader
+//         *   一回のみ呼び出される
+//         *
+//         * ・getLoaderManager().getLoader(LOADER_ID).startLoading()
 //         *   Loaderの処理を開始
 //         *   getLoaderManager().initLoaderが呼ばれた時と同様の処理
 //         *
-//         * ○getLoaderManager().getLoader(LOADER_ID).stopLoading()
+//         * ・getLoaderManager().getLoader(LOADER_ID).stopLoading()
 //         *   Loaderの処理を停止
 //         */
 //    }
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {// 非同期処理を行うLoaderを生成する
-        // getLoaderManager().initLoaderで一回のみ呼び出される
-
         String question = args.getString("question");
         String answer = args.getString("answer");
 
@@ -136,11 +137,15 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
         // ここでView等にデータをセット
 
         Log.v("API response", data);
+
+        // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）
+        getLoaderManager().destroyLoader(loader.getId());// loader.getId() == LOADER_ID（initLoaderの第一引数）
     }
 
     @Override
     public void onLoaderReset(Loader<String> loader) {// Loaderが破棄される時に呼び出し
         // Loaderが参照しているデータを削除する
+
     }
 
     /* ---------- END LoaderCallback（非同期処理）コールバック処理 ---------- */
