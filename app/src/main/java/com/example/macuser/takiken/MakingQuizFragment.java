@@ -14,22 +14,22 @@ import android.widget.TabHost;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MakingProblemFragment#newInstance} factory method to
+ * Use the {@link MakingQuizFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MakingProblemFragment extends Fragment {
+public class MakingQuizFragment extends Fragment {
 
-    public static MakingProblemFragment newInstance(int MakingProblemASection) {
+    public static MakingQuizFragment newInstance(int MakingQuizSection) {
         // フラグメントの作成
-        MakingProblemFragment fragment = new MakingProblemFragment();
+        MakingQuizFragment fragment = new MakingQuizFragment();
         Bundle args = new Bundle();
         // putInt（キーを指定して値を保存する。第1引数にキー、第2引数に保存する値を指定する。）
-        args.putInt("MakingProblemASection", MakingProblemASection);
+        args.putInt("MakingQuizSection", MakingQuizSection);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MakingProblemFragment() {
+    public MakingQuizFragment() {
         // Required empty public constructor
     }
 
@@ -42,7 +42,7 @@ public class MakingProblemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_making_problem, container, false);
+        View view = inflater.inflate(R.layout.fragment_making_quiz, container, false);
 
         FragmentTabHost host = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         host.setup(getActivity(), getChildFragmentManager(), R.id.content);
@@ -53,7 +53,7 @@ public class MakingProblemFragment extends Fragment {
 
         TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
         tabSpec2.setIndicator("選択問題");
-        host.addTab(tabSpec2, SnsFragment.class, null);
+        host.addTab(tabSpec2, MultipleChoiceFragment.class, null);
 
         return view;
     }
@@ -62,6 +62,6 @@ public class MakingProblemFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(getArguments().getInt("MakingProblemASection"));
+        ((MainActivity) activity).onSectionAttached(getArguments().getInt("MakingQuizSection"));
     }
 }

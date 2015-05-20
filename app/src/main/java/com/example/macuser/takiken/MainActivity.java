@@ -58,11 +58,11 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         }else if(position == ProblemAnswer) {// 問題解答
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ProblemAnswerFragment.newInstance(position + 1))
+                    .replace(R.id.container, QuizAnswerFragment.newInstance(position + 1))
                     .commit();
         }else if(position == MakingProblem) {// 問題作成
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, MakingProblemFragment.newInstance(position + 1))
+                    .replace(R.id.container, MakingQuizFragment.newInstance(position + 1))
                     .commit();
         }else if(position == Maps) {// たきざわMAP
             Intent intent = new Intent(MainActivity.this, MapsActivity.class);// どのクラスを対象にするか

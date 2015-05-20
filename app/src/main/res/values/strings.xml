@@ -22,9 +22,13 @@
     <string name="btn1">btn1</string>
     <string name="btn2">btn2</string>
 
-    <!--問題作成（一問一答）-->
-    <string name="qa_question_txt">問題文</string>
-    <string name="qa_answer_txt">解答</string>
-    <string name="qa_btn">決定</string>
+    <!-- 問題作成 -->
+    <string name="question_txt">問題文</string>
+    <string name="answer_txt">解答</string>
+    <string name="btn">決定</string>
+    <string name="incorrect1_txt">不正解1</string>
+    <string name="incorrect2_txt">不正解2</string>
+    <string name="incorrect3_txt">不正解3</string>
+    <string name="incorrect4_txt">不正解4</string>
 
 </resources>

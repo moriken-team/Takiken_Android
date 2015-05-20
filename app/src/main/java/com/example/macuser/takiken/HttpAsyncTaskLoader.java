@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by macuser on 15/05/13.
@@ -31,89 +32,127 @@ import java.util.Arrays;
 public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
 
     /** 引数 */
-    private String mArg;
-    private String mArg2;
+    private HashMap<String, String> requestData;
+    private int id;
 
     /** 非同期処理での結果を格納 */
-    private String mData;
+    private String returnData;
 
-    public HttpAsyncTaskLoader(Context context, String arg, String arg2) {
+    public HttpAsyncTaskLoader(Context context, HashMap<String, String> requestData, int id) {
         super(context);
-        this.mArg = arg;
-        this.mArg2 = arg2;
-
+        this.requestData = requestData;
+        this.id = id;
     }
 
     @Override
     public String loadInBackground() {// 非同期処理を記述
 
+        String test = String.valueOf(id);// 数値から文字列にキャスト変換
+        Log.v("id", test);
 
-//        try {
-//            // 適当に時間がかかる処理
-//            Thread.sleep(3000);
-//            mData = "hoge";
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        /**
+         * id
+         * 0：一問一答の問題作成（QuestionsAndAnswersFragment）
+         * 1：選択問題の問題作成（MultipleChoiceFragment）
+         */
+        switch (id){
+            case 0:// 一問一答の問題作成
+                // URL指定
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
+                // BODYに登録、設定
+                ArrayList<NameValuePair> value = new ArrayList<NameValuePair>();
+                value.add( new BasicNameValuePair("kentei_id", "1"));
+                value.add( new BasicNameValuePair("user_id", "1"));
+                value.add( new BasicNameValuePair("type", "2"));
+                value.add( new BasicNameValuePair("grade", "1"));
+                value.add( new BasicNameValuePair("number", "1"));
+                value.add( new BasicNameValuePair("sentence", requestData.get("question")));
+                value.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
+                value.add( new BasicNameValuePair("description", "012345"));
+                value.add( new BasicNameValuePair("public_flag", "1"));
+                value.add( new BasicNameValuePair("category_id", requestData.get("category")));
+                value.add( new BasicNameValuePair("item", "1"));
 
+                String responseData = null;
 
+                try {
+                    post.setEntity(new UrlEncodedFormEntity(value, "UTF-8"));
+                    // リクエスト送信
+                    HttpResponse response = client.execute(post);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData = EntityUtils.toString(entity, "UTF-8");
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
 
+                Log.v("mArg", requestData.get("category"));
+                Log.v("mArg", requestData.get("question"));
+                Log.v("mArg", requestData.get("answer"));
 
-        // URL指定
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
-        // BODYに登録、設定
-        ArrayList<NameValuePair> value = new ArrayList<NameValuePair>();
-        value.add( new BasicNameValuePair("kentei_id", "1"));
-        value.add( new BasicNameValuePair("user_id", "1"));
-        value.add( new BasicNameValuePair("type", "2"));
-        value.add( new BasicNameValuePair("grade", "1"));
-        value.add( new BasicNameValuePair("number", "1"));
-        value.add( new BasicNameValuePair("sentence", mArg));
-        value.add( new BasicNameValuePair("right_answer", mArg2));
-        value.add( new BasicNameValuePair("description", "012345"));
-        value.add( new BasicNameValuePair("public_flag", "1"));
-        value.add( new BasicNameValuePair("category_id", "1"));
-        value.add( new BasicNameValuePair("item", "1"));
+                returnData = responseData;
 
-//        Log.v("mArg", );
+                break;
+            case 1:// 選択問題の問題作成
+                // URL指定
+                HttpClient client2 = new DefaultHttpClient();
+                HttpPost post2 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
+                // BODYに登録、設定
+                ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
+                value2.add( new BasicNameValuePair("kentei_id", "1"));
+                value2.add( new BasicNameValuePair("user_id", "1"));
+                value2.add( new BasicNameValuePair("type", "1"));
+                value2.add( new BasicNameValuePair("grade", "1"));
+                value2.add( new BasicNameValuePair("number", "1"));
+                value2.add( new BasicNameValuePair("sentence", requestData.get("question")));
+                value2.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
+                value2.add( new BasicNameValuePair("wrong_answer1", requestData.get("incorrect1")));
+                value2.add( new BasicNameValuePair("wrong_answer2", requestData.get("incorrect2")));
+                value2.add( new BasicNameValuePair("wrong_answer3", requestData.get("incorrect3")));
+                value2.add( new BasicNameValuePair("description", "012345"));
+                value2.add( new BasicNameValuePair("public_flag", "1"));
+                value2.add( new BasicNameValuePair("category_id", requestData.get("category")));
+                value2.add( new BasicNameValuePair("item", "1"));
 
+                String responseData2 = null;
 
-        String body = null;
+                try {
+                    post2.setEntity(new UrlEncodedFormEntity(value2, "UTF-8"));
+                    // リクエスト送信
+                    HttpResponse response = client2.execute(post2);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData2 = EntityUtils.toString(entity, "UTF-8");
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
 
-        try {
-            post.setEntity(new UrlEncodedFormEntity(value, "UTF-8"));
-            // リクエスト送信
-            HttpResponse response = client.execute(post);
-            // 取得
-            HttpEntity entity = response.getEntity();
-            body = EntityUtils.toString(entity, "UTF-8");
+                returnData = responseData2;
 
-        } catch(IOException e) {
-            e.printStackTrace();
+                Log.v("mArg", requestData.get("category"));
+                Log.v("mArg", requestData.get("question"));
+                Log.v("mArg", requestData.get("answer"));
+                Log.v("mArg", requestData.get("incorrect1"));
+                Log.v("mArg", requestData.get("incorrect2"));
+                Log.v("mArg", requestData.get("incorrect3"));
+
+                break;
         }
 
-        Log.v("mArg", mArg);
-        Log.v("mArg2", mArg2);
-
-//        return mData;
-//        mArg = "成功";
-//          mData = mArg;
-//        return mData;
-//
-       return body;
+        return returnData;
     }
 
     @Override
     protected void onStartLoading() {// 非同期処理の開始前
         // ActivityまたはFragment復帰時（バックキーで戻る、ホーム画面から戻る等）に再実行されるためここで非同期処理を行うかチェック
 
-        if (mData != null) {// 結果がnullではないは場合は既に実行済みとして非同期処理は不要
+        if (returnData != null) {// 結果がnullではないは場合は既に実行済みとして非同期処理は不要
             // deliverResultで結果を送信
-            deliverResult(mData);
+            deliverResult(returnData);
         }
 
-        if (takeContentChanged() || mData == null) {
+        if (takeContentChanged() || returnData == null) {
             // 非同期処理を開始
             forceLoad();
         }
@@ -149,7 +188,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
         onStopLoading();
 
         // データをクリア
-        mData = null;
+        returnData = null;
     }
 }
 /* ---------- END AsyncTaskLoader（非同期処理）ロード処理 ---------- */

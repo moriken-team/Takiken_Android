@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.macuser.takiken.QuestionsAndAnswersFragment"
+    tools:context="com.example.macuser.takiken.MultipleChoiceFragment"
     android:background="@drawable/blackboard">
 
     <ScrollView
@@ -19,7 +19,7 @@
             <Spinner
                 android:layout_width="285dp"
                 android:layout_height="120dp"
-                android:id="@+id/qa_category"
+                android:id="@+id/mc_category"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/wallet_holo_blue_light"
                 android:spinnerMode="dialog"
@@ -29,7 +29,7 @@
             <EditText
                 android:layout_width="285dp"
                 android:layout_height="314dp"
-                android:id="@+id/qa_question"
+                android:id="@+id/mc_question"
                 android:layout_gravity="center_horizontal|top"
                 android:hint="@string/question_txt"
                 android:inputType="text|textMultiLine"
@@ -38,9 +38,39 @@
 
             <EditText
                 android:layout_width="285dp"
-                android:layout_height="332dp"
-                android:id="@+id/qa_answer"
+                android:layout_height="50dp"
+                android:id="@+id/mc_answer"
                 android:hint="@string/answer_txt"
+                android:inputType="text|textMultiLine"
+                android:background="@color/button_material_light"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <EditText
+                android:layout_width="285dp"
+                android:layout_height="50dp"
+                android:id="@+id/mc_incorrect1"
+                android:hint="@string/incorrect1_txt"
+                android:inputType="text|textMultiLine"
+                android:background="@color/button_material_light"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <EditText
+                android:layout_width="285dp"
+                android:layout_height="50dp"
+                android:id="@+id/mc_incorrect2"
+                android:hint="@string/incorrect2_txt"
+                android:inputType="text|textMultiLine"
+                android:background="@color/button_material_light"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <EditText
+                android:layout_width="285dp"
+                android:layout_height="50dp"
+                android:id="@+id/mc_incorrect3"
+                android:hint="@string/incorrect3_txt"
                 android:inputType="text|textMultiLine"
                 android:background="@color/button_material_light"
                 android:layout_gravity="center_horizontal"
@@ -50,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn"
-                android:id="@+id/qa_button"
+                android:id="@+id/mc_button"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="34dp" />
 
