@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Use the {@link QuestionsAndAnswersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QuestionsAndAnswersFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+public class QuestionsAndAnswersFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
     public static QuestionsAndAnswersFragment newInstance() {
         QuestionsAndAnswersFragment fragment = new QuestionsAndAnswersFragment();
         Bundle args = new Bundle();
@@ -119,7 +119,7 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     private static final int LOADER_ID = 0;
 
     @Override
-    public Loader<String> onCreateLoader(int id, Bundle inputtedData) {// 非同期処理を行うLoaderを生成する
+    public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle inputtedData) {// 非同期処理を行うLoaderを生成する
         // 非同期処理に渡すデータを設定
         HashMap<String, String> requestData = new HashMap<String, String>();
         requestData.put("category", inputtedData.getString("category"));
@@ -130,10 +130,10 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String data) {// 非同期処理完了時
+    public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
 
-        Log.v("API response", data);
+//        Log.v("API response", data);
 
         Toast.makeText(getActivity(), "問題を登録しました。", Toast.LENGTH_LONG).show();
 
@@ -142,7 +142,7 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     }
 
     @Override
-    public void onLoaderReset(Loader<String> loader) {// Loaderが破棄される時に呼び出し
+    public void onLoaderReset(Loader<HashMap<String, String>> loader) {// Loaderが破棄される時に呼び出し
         // Loaderが参照しているデータを削除する
 
     }

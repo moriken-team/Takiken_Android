@@ -9,16 +9,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -29,14 +30,14 @@ import java.util.HashMap;
 /* ---------- START AsyncTaskLoader（非同期処理）ロード処理 ---------- */
 
 //Http通信でAPIを利用する際の非同期通信クラス（このクラスで非同期処理してデータを受け渡している）
-public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
+public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>> {
 
     /** 引数 */
     private HashMap<String, String> requestData;
     private int id;
 
     /** 非同期処理での結果を格納 */
-    private String returnData;
+    private HashMap<String, String> returnData;
 
     public HttpAsyncTaskLoader(Context context, HashMap<String, String> requestData, int id) {
         super(context);
@@ -45,7 +46,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
     }
 
     @Override
-    public String loadInBackground() {// 非同期処理を記述
+    public HashMap<String, String> loadInBackground() {// 非同期処理を記述
 
         String test = String.valueOf(id);// 数値から文字列にキャスト変換
         Log.v("id", test);
@@ -54,13 +55,13 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
          * id
          * 0：一問一答の問題作成（QuestionsAndAnswersFragment）
          * 1：選択問題の問題作成（MultipleChoiceFragment）
+         * 2：カテゴリ選択で問題解答（SelectCategoryFragment）
          */
         switch (id){
             case 0:// 一問一答の問題作成
-                // URL指定
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
-                // BODYに登録、設定
+                // パラメータの設定
                 ArrayList<NameValuePair> value = new ArrayList<NameValuePair>();
                 value.add( new BasicNameValuePair("kentei_id", "1"));
                 value.add( new BasicNameValuePair("user_id", "1"));
@@ -91,14 +92,13 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
                 Log.v("mArg", requestData.get("question"));
                 Log.v("mArg", requestData.get("answer"));
 
-                returnData = responseData;
+//                returnData = responseData;
 
                 break;
             case 1:// 選択問題の問題作成
-                // URL指定
                 HttpClient client2 = new DefaultHttpClient();
                 HttpPost post2 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
-                // BODYに登録、設定
+                // パラメータの設定
                 ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
                 value2.add( new BasicNameValuePair("kentei_id", "1"));
                 value2.add( new BasicNameValuePair("user_id", "1"));
@@ -128,7 +128,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
                     e.printStackTrace();
                 }
 
-                returnData = responseData2;
+//                returnData = responseData2;
 
                 Log.v("mArg", requestData.get("category"));
                 Log.v("mArg", requestData.get("question"));
@@ -138,6 +138,62 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<String> {
                 Log.v("mArg", requestData.get("incorrect3"));
 
                 break;
+            case 2:// カテゴリ選択で問題解答
+                // URL指定
+                HttpClient client3 = new DefaultHttpClient();
+
+                // パラメータの設定
+                ArrayList<NameValuePair> value3 = new ArrayList<NameValuePair>();
+                value3.add( new BasicNameValuePair("kentei_id", "1"));
+                value3.add( new BasicNameValuePair("employ", "2012"));
+                value3.add( new BasicNameValuePair("grade", "3"));
+                value3.add( new BasicNameValuePair("category_id", "1"));
+                value3.add( new BasicNameValuePair("item", "1"));
+
+                String responseData3 = null;
+                HashMap<String, String> jsonParceData3 = new HashMap<String, String>();
+
+                try {
+                    String query = URLEncodedUtils.format(value3, "UTF-8");
+                    HttpGet get = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query);
+
+                    // リクエスト送信
+                    HttpResponse response = client3.execute(get);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData3 = EntityUtils.toString(entity, "UTF-8");
+
+
+                    // jsonパース
+                    JSONObject json3 = new JSONObject(responseData3);
+
+                    jsonParceData3.put("sentence", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
+                    jsonParceData3.put("right_answer", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
+                    jsonParceData3.put("wrong_answer1", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
+                    jsonParceData3.put("wrong_answer2", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
+                    jsonParceData3.put("wrong_answer3", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+
+                    Log.v("sentence >>>>>>>>", jsonParceData3.get("sentence"));
+                    Log.v("right_answer >>>>>>>>", jsonParceData3.get("right_answer"));
+                    Log.v("wrong_answer1 >>>>>>>>", jsonParceData3.get("wrong_answer1"));
+                    Log.v("wrong_answer2 >>>>>>>>", jsonParceData3.get("wrong_answer2"));
+                    Log.v("wrong_answer3 >>>>>>>>", jsonParceData3.get("wrong_answer3"));
+
+
+
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                returnData = jsonParceData3;
+
+
+                break;
+
         }
 
         return returnData;

@@ -48,11 +48,11 @@ public class QuizAnswerFragment extends Fragment {
         host.setup(getActivity(), getChildFragmentManager(), R.id.content);
 
         TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
-        tabSpec1.setIndicator("1問解答");
-        host.addTab(tabSpec1, SnsFragment.class, null);
+        tabSpec1.setIndicator("カテゴリ別解答");
+        host.addTab(tabSpec1, SelectCategoryFragment.class, null);
 
         TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
-        tabSpec2.setIndicator("100問解答");
+        tabSpec2.setIndicator("ランダム解答");
         host.addTab(tabSpec2, SnsFragment.class, null);
 
         return view;

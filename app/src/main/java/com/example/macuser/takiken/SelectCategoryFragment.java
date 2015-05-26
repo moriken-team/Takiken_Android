@@ -2,7 +2,10 @@ package com.example.macuser.takiken;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -11,27 +14,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MultipleChoiceFragment#newInstance} factory method to
+ * Use the {@link SelectCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MultipleChoiceFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
-    public static MultipleChoiceFragment newInstance() {
-        MultipleChoiceFragment fragment = new MultipleChoiceFragment();
+public class SelectCategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    public static SelectCategoryFragment newInstance() {
+        SelectCategoryFragment fragment = new SelectCategoryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MultipleChoiceFragment() {
+    public SelectCategoryFragment() {
         // Required empty public constructor
     }
 
@@ -43,7 +44,8 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_multiple_choice, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_select_category, container, false);
 
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成
@@ -62,18 +64,17 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
         adapter.add("生涯学習");
         adapter.add("メディア");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.mc_category);
+        Spinner spinner = (Spinner) view.findViewById(R.id.ca_category);
         // SpinnerにAdapterを設定
         spinner.setAdapter(adapter);
         /* ---------- END ドロップダウンの表示設定 ---------- */
 
-        //ボタンクリック：非同期処理により、入力した項目をPOSTで送信
-        Button decision = (Button) view.findViewById(R.id.mc_button);
+        Button decision = (Button) view.findViewById(R.id.ca_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // レイアウトからSpinnerを取得
-                Spinner item = (Spinner) getActivity().findViewById(R.id.mc_category);
+                Spinner item = (Spinner) getActivity().findViewById(R.id.ca_category);
                 // 選択したアイテム取得
                 String selectedCategory = (String) item.getSelectedItem();
 
@@ -87,30 +88,14 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
 
 
 
-                EditText question = (EditText) getActivity().findViewById(R.id.mc_question);
-                EditText answer = (EditText) getActivity().findViewById(R.id.mc_answer);
-                EditText incorrect1 = (EditText) getActivity().findViewById(R.id.mc_incorrect1);
-                EditText incorrect2 = (EditText) getActivity().findViewById(R.id.mc_incorrect2);
-                EditText incorrect3 = (EditText) getActivity().findViewById(R.id.mc_incorrect3);
-
-                String inputtedQuestion = question.getText().toString();
-                String inputtedAnswer = answer.getText().toString();
-                String inputtedIncorrect1 = incorrect1.getText().toString();
-                String inputtedIncorrect2 = incorrect2.getText().toString();
-                String inputtedIncorrect3 = incorrect3.getText().toString();
 
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                 Bundle inputtedData = new Bundle();
                 inputtedData.putString("category", categoryPosition);
-                inputtedData.putString("question", inputtedQuestion);
-                inputtedData.putString("answer", inputtedAnswer);
-                inputtedData.putString("incorrect1", inputtedIncorrect1);
-                inputtedData.putString("incorrect2", inputtedIncorrect2);
-                inputtedData.putString("incorrect3", inputtedIncorrect3);
 
                 // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getLoaderManager().initLoader(LOADER_ID, inputtedData, MultipleChoiceFragment.this);
+                getLoaderManager().initLoader(LOADER_ID, inputtedData, SelectCategoryFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
             }
         });
@@ -119,29 +104,35 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
     }
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_ID = 2;
 
     @Override
     public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle inputtedData) {// 非同期処理を行うLoaderを生成する
         // 非同期処理に渡すデータを設定
         HashMap<String, String> requestData = new HashMap<String, String>();
         requestData.put("category", inputtedData.getString("category"));
-        requestData.put("question", inputtedData.getString("question"));
-        requestData.put("answer", inputtedData.getString("answer"));
-        requestData.put("incorrect1", inputtedData.getString("incorrect1"));
-        requestData.put("incorrect2", inputtedData.getString("incorrect2"));
-        requestData.put("incorrect3", inputtedData.getString("incorrect3"));
 
         return new HttpAsyncTaskLoader(getActivity(), requestData, id);
     }
 
     @Override
-    public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
+    public void onLoadFinished(Loader<HashMap<String, String>> loader, final HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
 
-//        Log.v("API response", data);
+        Log.v("API response", data.get("sentence"));
 
-        Toast.makeText(getActivity(), "問題を登録しました。", Toast.LENGTH_LONG).show();
+        // メインスレッド以外でGUI上での処理を行なう場合
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, CategoryQuizFragment.newInstance(data))
+                        .commit();
+            }
+        });
 
         // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）
         getLoaderManager().destroyLoader(loader.getId());// loader.getId() == LOADER_ID（initLoaderの第一引数）
