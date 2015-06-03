@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;

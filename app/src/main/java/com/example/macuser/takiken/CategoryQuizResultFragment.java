@@ -12,27 +12,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SelectCategoryFragment#newInstance} factory method to
+ * Use the {@link CategoryQuizResultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SelectCategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
-    public static SelectCategoryFragment newInstance() {
-        SelectCategoryFragment fragment = new SelectCategoryFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    public static CategoryQuizResultFragment newInstance(HashMap<String, String> selectedData) {
+        CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
+        Bundle content = new Bundle();
+        content.putString("selected", selectedData.get("selected"));
+        content.putString("answer", selectedData.get("answer"));
+        content.putString("category_id", selectedData.get("category_id"));
+        fragment.setArguments(content);
         return fragment;
     }
 
-    public SelectCategoryFragment() {
+    public CategoryQuizResultFragment() {
         // Required empty public constructor
     }
 
@@ -45,64 +47,59 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_select_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_quiz_result, container, false);
+
+        Log.v("selected-------", getArguments().getString("selected"));
+        Log.v("answer-------", getArguments().getString("answer"));
+        Log.v("category_id-------", getArguments().getString("category_id"));
 
 
-        /* ---------- START ドロップダウンの表示設定 ---------- */
-        // Adapterの作成
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Adapterにアイテムを追加
-        adapter.add("滝沢のなりたち");
-        adapter.add("自然");
-        adapter.add("施設");
-        adapter.add("神社・仏閣");
-        adapter.add("伝統・文化");
-        adapter.add("交通");
-        adapter.add("人物");
-        adapter.add("イベント");
-        adapter.add("農作物・特産物");
-        adapter.add("生涯学習");
-        adapter.add("メディア");
+        TextView textView = (TextView) view.findViewById(R.id.cqr_result);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.ca_category);
-        // SpinnerにAdapterを設定
-        spinner.setAdapter(adapter);
-        /* ---------- END ドロップダウンの表示設定 ---------- */
+        if (getArguments().getString("selected") == getArguments().getString("answer")) {
+            // テキストビューのテキストを設定
+            textView.setText("◯ 正解");
 
-        Button decision = (Button) view.findViewById(R.id.ca_button);
+            Log.v("correct", "正解");
+        } else {
+            // テキストビューのテキストを設定
+            textView.setText("☓ 不正解");
+
+            Log.v("incorrect", "不正解");
+        }
+
+
+
+
+
+
+
+
+        Button decision = (Button) view.findViewById(R.id.cqr_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // レイアウトからSpinnerを取得
-                Spinner item = (Spinner) getActivity().findViewById(R.id.ca_category);
-                // 選択したアイテム取得
-                String selectedCategory = (String) item.getSelectedItem();
-
-
-                // 選択したアイテムの位置を取得
-                String categoryPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
-
-                // ログで確認
-                Log.v("spinner item", selectedCategory);
-                Log.v("spinner position", categoryPosition);
-
-
-
-
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                 Bundle inputtedData = new Bundle();
-                inputtedData.putString("category_id", categoryPosition);
+                inputtedData.putString("category_id", getArguments().getString("category_id"));
 
                 // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getLoaderManager().initLoader(LOADER_ID, inputtedData, SelectCategoryFragment.this);
+                getLoaderManager().initLoader(LOADER_ID, inputtedData, CategoryQuizResultFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
             }
         });
 
+
         return view;
     }
+
+
+
+
+
+
+
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
     private static final int LOADER_ID = 2;

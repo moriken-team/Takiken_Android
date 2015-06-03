@@ -26,6 +26,7 @@
     <string name="question_txt">問題文</string>
     <string name="answer_txt">解答</string>
     <string name="btn">決定</string>
+    <string name="nextBtn">次へ</string>
     <string name="incorrect1_txt">不正解1</string>
     <string name="incorrect2_txt">不正解2</string>
     <string name="incorrect3_txt">不正解3</string>

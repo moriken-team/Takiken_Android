@@ -29,7 +29,8 @@ import java.util.HashMap;
 
 /* ---------- START AsyncTaskLoader（非同期処理）ロード処理 ---------- */
 
-//Http通信でAPIを利用する際の非同期通信クラス（このクラスで非同期処理してデータを受け渡している）
+// Http通信でAPIを利用する際の非同期通信クラス（このクラスで非同期処理してデータを受け渡している）
+// 受け取る型は連想配列（HashMap）
 public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>> {
 
     /** 引数 */
@@ -172,13 +173,14 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     jsonParceData3.put("wrong_answer1", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
                     jsonParceData3.put("wrong_answer2", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
                     jsonParceData3.put("wrong_answer3", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+                    jsonParceData3.put("category_id", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("category_id"));
 
                     Log.v("sentence >>>>>>>>", jsonParceData3.get("sentence"));
                     Log.v("right_answer >>>>>>>>", jsonParceData3.get("right_answer"));
                     Log.v("wrong_answer1 >>>>>>>>", jsonParceData3.get("wrong_answer1"));
                     Log.v("wrong_answer2 >>>>>>>>", jsonParceData3.get("wrong_answer2"));
                     Log.v("wrong_answer3 >>>>>>>>", jsonParceData3.get("wrong_answer3"));
-
+                    Log.v("category_id >>>>>>>>", jsonParceData3.get("category_id"));
 
 
 

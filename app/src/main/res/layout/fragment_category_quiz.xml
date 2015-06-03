@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.macuser.takiken.CategoryQuizFragment">
@@ -11,7 +11,49 @@
 
         <TextView android:id="@+id/cq_sentence"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="124dp"
+            android:layout_gravity="center_horizontal" />
+
+        <RadioGroup
+            android:layout_width="169dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/cq_radioGroup"
+            android:layout_weight="0.41">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cq_radioButton1"
+                android:layout_gravity="center_horizontal|left" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cq_radioButton2"
+                android:layout_gravity="center_horizontal|left" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cq_radioButton3"
+                android:layout_gravity="center_horizontal|left" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cq_radioButton4"
+                android:layout_gravity="center_horizontal|left" />
+
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn"
+            android:id="@+id/cq_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="34dp" />
 
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>
