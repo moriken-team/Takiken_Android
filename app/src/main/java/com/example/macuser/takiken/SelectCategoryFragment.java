@@ -127,10 +127,12 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         handler.post(new Runnable() {
             @Override
             public void run() {
+                int count = 1;
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CategoryQuizFragment.newInstance(data))
+                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, count))
                         .commit();
             }
         });

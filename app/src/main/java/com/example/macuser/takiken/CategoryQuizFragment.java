@@ -22,7 +22,7 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class CategoryQuizFragment extends Fragment {
-    public static CategoryQuizFragment newInstance(HashMap<String, String> quiz) {
+    public static CategoryQuizFragment newInstance(HashMap<String, String> quiz, int count) {
         CategoryQuizFragment fragment = new CategoryQuizFragment();
         Bundle content = new Bundle();
         content.putString("sentence", quiz.get("sentence"));
@@ -31,6 +31,7 @@ public class CategoryQuizFragment extends Fragment {
         content.putString("wrong_answer2", quiz.get("wrong_answer2"));
         content.putString("wrong_answer3", quiz.get("wrong_answer3"));
         content.putString("category_id", quiz.get("category_id"));
+        content.putInt("count", count);
         fragment.setArguments(content);
         return fragment;
     }
@@ -57,10 +58,11 @@ public class CategoryQuizFragment extends Fragment {
         Log.v("wrong_answer3-------", getArguments().getString("wrong_answer3"));
         Log.v("category_id-------", getArguments().getString("category_id"));
 
-        TextView textView = (TextView) view.findViewById(R.id.cq_sentence);
-        // テキストビューのテキストを設定
-        textView.setText(getArguments().getString("sentence"));
+        TextView count = (TextView) view.findViewById(R.id.cq_count);
+        count.setText(getArguments().getInt("count") + "/5");
 
+        TextView sentence = (TextView) view.findViewById(R.id.cq_sentence);
+        sentence.setText(getArguments().getString("sentence"));
 
 
         // ラジオボタンのテキストを設定
@@ -75,8 +77,6 @@ public class CategoryQuizFragment extends Fragment {
 
         RadioButton radio4 = (RadioButton) view.findViewById(R.id.cq_radioButton4);
         radio4.setText(getArguments().getString("wrong_answer3"));
-
-
 
 
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.cq_radioGroup);
@@ -98,19 +98,17 @@ public class CategoryQuizFragment extends Fragment {
                     Log.v("check", text);
 
 
-
-
                     HashMap<String, String> selectedData = new HashMap<String, String>();
                     selectedData.put("selected", text);
                     selectedData.put("answer", getArguments().getString("right_answer"));
                     selectedData.put("category_id", getArguments().getString("category_id"));
 
 
-                    // 画面遷移
+                    // CategoryQuizResultFragmentへ画面遷移
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(selectedData))
+                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(selectedData, getArguments().getInt("count")))
                             .commit();
 
                 } else {

@@ -24,12 +24,13 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
-    public static CategoryQuizResultFragment newInstance(HashMap<String, String> selectedData) {
+    public static CategoryQuizResultFragment newInstance(HashMap<String, String> selectedData, int count) {
         CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
         Bundle content = new Bundle();
         content.putString("selected", selectedData.get("selected"));
         content.putString("answer", selectedData.get("answer"));
         content.putString("category_id", selectedData.get("category_id"));
+        content.putInt("count", count);
         fragment.setArguments(content);
         return fragment;
     }
@@ -53,53 +54,56 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         Log.v("answer-------", getArguments().getString("answer"));
         Log.v("category_id-------", getArguments().getString("category_id"));
 
+        TextView count = (TextView) view.findViewById(R.id.cqr_count);
+        count.setText(getArguments().getInt("count") + "/5");
 
-        TextView textView = (TextView) view.findViewById(R.id.cqr_result);
+        TextView result = (TextView) view.findViewById(R.id.cqr_result);
 
         if (getArguments().getString("selected") == getArguments().getString("answer")) {
             // テキストビューのテキストを設定
-            textView.setText("◯ 正解");
+            result.setText("◯ 正解");
 
             Log.v("correct", "正解");
         } else {
             // テキストビューのテキストを設定
-            textView.setText("☓ 不正解");
+            result.setText("✕ 不正解");
 
             Log.v("incorrect", "不正解");
         }
 
-
-
-
-
-
+        if (getArguments().getInt("count") == 5) {
+            Button finish = (Button) view.findViewById(R.id.cqr_button);
+            finish.setText("終了");
+        }
 
 
         Button decision = (Button) view.findViewById(R.id.cqr_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                Bundle inputtedData = new Bundle();
-                inputtedData.putString("category_id", getArguments().getString("category_id"));
+                if (getArguments().getInt("count") < 5) {
+                    /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                    // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                    Bundle inputtedData = new Bundle();
+                    inputtedData.putString("category_id", getArguments().getString("category_id"));
 
-                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getLoaderManager().initLoader(LOADER_ID, inputtedData, CategoryQuizResultFragment.this);
+                    // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                    getLoaderManager().initLoader(LOADER_ID, inputtedData, CategoryQuizResultFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                } else {
+                    // SelectCategoryFragmentへ画面遷移
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, QuizAnswerFragment.newInstance(3))
+                            .commit();
+                }
+
             }
         });
 
-
         return view;
     }
-
-
-
-
-
-
-
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
     private static final int LOADER_ID = 2;
@@ -127,7 +131,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CategoryQuizFragment.newInstance(data))
+                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, getArguments().getInt("count") + 1))
                         .commit();
             }
         });
