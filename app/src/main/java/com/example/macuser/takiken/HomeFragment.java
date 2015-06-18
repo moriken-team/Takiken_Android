@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 //        });
 
         FragmentTabHost host = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
-        host.setup(getActivity(), getChildFragmentManager(), R.id.content);
+        host.setup(getActivity(), getChildFragmentManager(), R.id.h_content);
 
         TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
         tabSpec1.setIndicator("SNS");

@@ -65,9 +65,13 @@ public class MainActivity extends ActionBarActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MakingQuizFragment.newInstance(position + 1))
                     .commit();
-        }else if(position == Maps) {// たきざわMAP
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);// どのクラスを対象にするか
-            startActivity(intent);// 画面遷移
+//        }else if(position == Maps) {// たきざわMAP
+//            Intent intent = new Intent(MainActivity.this, MapsActivity.class);// どのクラスを対象にするか
+//            startActivity(intent);// 画面遷移
+        }else if(position == Maps) {// 問題作成
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MapsFragment.newInstance(position + 1))
+                    .commit();
         }else{
             fragmentManager.beginTransaction()
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))

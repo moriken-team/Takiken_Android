@@ -45,7 +45,7 @@ public class QuizAnswerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_quiz_answer, container, false);
 
         FragmentTabHost host = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
-        host.setup(getActivity(), getChildFragmentManager(), R.id.content);
+        host.setup(getActivity(), getChildFragmentManager(), R.id.qa_content);
 
         TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
         tabSpec1.setIndicator("カテゴリ別解答");
@@ -53,7 +53,7 @@ public class QuizAnswerFragment extends Fragment {
 
         TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
         tabSpec2.setIndicator("ランダム解答");
-        host.addTab(tabSpec2, SnsFragment.class, null);
+        host.addTab(tabSpec2, SelectRandomFragment.class, null);
 
         return view;
     }

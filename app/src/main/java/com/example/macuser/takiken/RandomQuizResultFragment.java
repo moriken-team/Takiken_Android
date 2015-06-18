@@ -16,53 +16,48 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.Random;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoryQuizResultFragment#newInstance} factory method to
+ * Use the {@link RandomQuizResultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
-    public static CategoryQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
-        CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
+public class RandomQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>>{
+    public static RandomQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
+        RandomQuizResultFragment fragment = new RandomQuizResultFragment();
         Bundle content = new Bundle();
         content.putString("answer", resultData.get("answer"));
-        content.putString("category_id", resultData.get("category_id"));
         content.putInt("quizLoop", countData.get("quizLoop"));
         content.putInt("correctAnswer", countData.get("correctAnswer"));
         fragment.setArguments(content);
         return fragment;
     }
 
-    public CategoryQuizResultFragment() {
+    public RandomQuizResultFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_category_quiz_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_random_quiz_result, container, false);
 
-//        Log.v("selected-------", getArguments().getString("selected"));
-//        Log.v("answer-------", getArguments().getString("answer"));
-//        Log.v("category_id-------", getArguments().getString("category_id"));
-
-        TextView count = (TextView) view.findViewById(R.id.cqr_count);
+        TextView count = (TextView) view.findViewById(R.id.rqr_count);
         count.setText(getArguments().getInt("quizLoop") + "/5");
 
-        TextView correct = (TextView) view.findViewById(R.id.cqr_correct);
+        TextView correct = (TextView) view.findViewById(R.id.rqr_correct);
         correct.setText(getArguments().getInt("correctAnswer") + "/5");
 
-
-
-        TextView result = (TextView) view.findViewById(R.id.cqr_result);
+        TextView result = (TextView) view.findViewById(R.id.rqr_result);
 
         if (getArguments().getString("answer") == "correct") {
             // テキストビューのテキストを設定
@@ -73,7 +68,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         }
 
         if (getArguments().getInt("quizLoop") == 5) {
-            Button finish = (Button) view.findViewById(R.id.cqr_button);
+            Button finish = (Button) view.findViewById(R.id.rqr_button);
             finish.setText("終了");
         }
 
@@ -82,18 +77,18 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         Log.v("---正答数---", test);
 
 
-        Button decision = (Button) view.findViewById(R.id.cqr_button);
+        Button decision = (Button) view.findViewById(R.id.rqr_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getArguments().getInt("quizLoop") < 5) {
                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                    Bundle receivedData = new Bundle();
-                    receivedData.putString("category_id", getArguments().getString("category_id"));
+                    Bundle data = new Bundle();
+                    data.putString("data", "data");
 
                     // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                    getLoaderManager().initLoader(LOADER_ID, receivedData, CategoryQuizResultFragment.this);
+                    getLoaderManager().initLoader(LOADER_ID, data, RandomQuizResultFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
                 } else {
                     // SelectCategoryFragmentへ画面遷移
@@ -111,13 +106,13 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
     }
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
-    private static final int LOADER_ID = 2;
+    private static final int LOADER_ID = 3;
 
     @Override
-    public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle receivedData) {// 非同期処理を行うLoaderを生成する
+    public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle data) {// 非同期処理を行うLoaderを生成する
         // 非同期処理に渡すデータを設定
         HashMap<String, String> requestData = new HashMap<String, String>();
-        requestData.put("category_id", receivedData.getString("category_id"));
+        requestData.put("data", data.getString("data"));
 
         return new HttpAsyncTaskLoader(getActivity(), requestData, id);
     }
@@ -140,7 +135,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, countData))
+                        .replace(R.id.container, RandomQuizFragment.newInstance(data, countData))
                         .commit();
             }
         });
@@ -155,4 +150,5 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
 
     }
     /* ---------- END LoaderCallback（非同期処理）コールバック処理 ---------- */
+
 }

@@ -47,7 +47,6 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_category, container, false);
 
-
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
@@ -65,17 +64,17 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         adapter.add("生涯学習");
         adapter.add("メディア");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.ca_category);
+        Spinner spinner = (Spinner) view.findViewById(R.id.sc_category);
         // SpinnerにAdapterを設定
         spinner.setAdapter(adapter);
         /* ---------- END ドロップダウンの表示設定 ---------- */
 
-        Button decision = (Button) view.findViewById(R.id.ca_button);
+        Button decision = (Button) view.findViewById(R.id.sc_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // レイアウトからSpinnerを取得
-                Spinner item = (Spinner) getActivity().findViewById(R.id.ca_category);
+                Spinner item = (Spinner) getActivity().findViewById(R.id.sc_category);
                 // 選択したアイテム取得
                 String selectedCategory = (String) item.getSelectedItem();
 
@@ -127,12 +126,14 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int count = 1;
+                HashMap<String, Integer> countData = new HashMap<String, Integer>();
+                countData.put("quizLoop", 1);
+                countData.put("correctAnswer", 0);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, count))
+                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, countData))
                         .commit();
             }
         });

@@ -45,7 +45,7 @@ public class MakingQuizFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_making_quiz, container, false);
 
         FragmentTabHost host = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
-        host.setup(getActivity(), getChildFragmentManager(), R.id.content);
+        host.setup(getActivity(), getChildFragmentManager(), R.id.mq_content);
 
         TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
         tabSpec1.setIndicator("一問一答");

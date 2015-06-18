@@ -16,31 +16,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoryQuizFragment#newInstance} factory method to
+ * Use the {@link RandomQuizFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryQuizFragment extends Fragment {
-    public static CategoryQuizFragment newInstance(HashMap<String, String> quiz, HashMap<String, Integer> countData) {
-        CategoryQuizFragment fragment = new CategoryQuizFragment();
+public class RandomQuizFragment extends Fragment {
+    public static RandomQuizFragment newInstance(HashMap<String, String> quiz, HashMap<String, Integer> countData) {
+        RandomQuizFragment fragment = new RandomQuizFragment();
         Bundle content = new Bundle();
         content.putString("sentence", quiz.get("sentence"));
         content.putString("right_answer", quiz.get("right_answer"));
         content.putString("wrong_answer1", quiz.get("wrong_answer1"));
         content.putString("wrong_answer2", quiz.get("wrong_answer2"));
         content.putString("wrong_answer3", quiz.get("wrong_answer3"));
-        content.putString("category_id", quiz.get("category_id"));
         content.putInt("quizLoop", countData.get("quizLoop"));
         content.putInt("correctAnswer", countData.get("correctAnswer"));
         fragment.setArguments(content);
         return fragment;
     }
 
-    public CategoryQuizFragment() {
+    public RandomQuizFragment() {
         // Required empty public constructor
     }
 
@@ -53,19 +51,18 @@ public class CategoryQuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_category_quiz, container, false);
+        View view = inflater.inflate(R.layout.fragment_random_quiz, container, false);
 
         Log.v("sentence-------", getArguments().getString("sentence"));
         Log.v("right_answer-------", getArguments().getString("right_answer"));
         Log.v("wrong_answer1-------", getArguments().getString("wrong_answer1"));
         Log.v("wrong_answer2-------", getArguments().getString("wrong_answer2"));
         Log.v("wrong_answer3-------", getArguments().getString("wrong_answer3"));
-        Log.v("category_id-------", getArguments().getString("category_id"));
 
-        TextView count = (TextView) view.findViewById(R.id.cq_count);
+        TextView count = (TextView) view.findViewById(R.id.rq_count);
         count.setText(getArguments().getInt("quizLoop") + "/5");
 
-        TextView sentence = (TextView) view.findViewById(R.id.cq_sentence);
+        TextView sentence = (TextView) view.findViewById(R.id.rq_sentence);
         sentence.setText(getArguments().getString("sentence"));
 
         //配列の中身をシャッフルするためにリスト形式に変更
@@ -79,22 +76,22 @@ public class CategoryQuizFragment extends Fragment {
         Collections.shuffle(choices);// 配列の中身をシャッフル
 
         // ラジオボタンのテキストを設定
-        RadioButton radio1 = (RadioButton) view.findViewById(R.id.cq_radioButton1);
+        RadioButton radio1 = (RadioButton) view.findViewById(R.id.rq_radioButton1);
         radio1.setText(choices.get(0));
 
-        RadioButton radio2 = (RadioButton) view.findViewById(R.id.cq_radioButton2);
+        RadioButton radio2 = (RadioButton) view.findViewById(R.id.rq_radioButton2);
         radio2.setText(choices.get(1));
 
-        RadioButton radio3 = (RadioButton) view.findViewById(R.id.cq_radioButton3);
+        RadioButton radio3 = (RadioButton) view.findViewById(R.id.rq_radioButton3);
         radio3.setText(choices.get(2));
 
-        RadioButton radio4 = (RadioButton) view.findViewById(R.id.cq_radioButton4);
+        RadioButton radio4 = (RadioButton) view.findViewById(R.id.rq_radioButton4);
         radio4.setText(choices.get(3));
 
 
-        final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.cq_radioGroup);
+        final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rq_radioGroup);
 
-        Button decision = (Button) view.findViewById(R.id.cq_button);
+        Button decision = (Button) view.findViewById(R.id.rq_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +125,6 @@ public class CategoryQuizFragment extends Fragment {
 
                     HashMap<String, String> resultData = new HashMap<String, String>();
                     resultData.put("answer", answer);
-                    resultData.put("category_id", getArguments().getString("category_id"));
 
                     HashMap<String, Integer> countData = new HashMap<String, Integer>();
                     countData.put("quizLoop", getArguments().getInt("quizLoop"));
@@ -138,7 +134,7 @@ public class CategoryQuizFragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
+                            .replace(R.id.container, RandomQuizResultFragment.newInstance(resultData, countData))
                             .commit();
 
                 } else {

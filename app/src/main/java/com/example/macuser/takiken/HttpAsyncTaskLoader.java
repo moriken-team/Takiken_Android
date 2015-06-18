@@ -56,7 +56,8 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
          * id
          * 0：一問一答の問題作成（QuestionsAndAnswersFragment）
          * 1：選択問題の問題作成（MultipleChoiceFragment）
-         * 2：カテゴリ選択で問題解答（SelectCategoryFragment）
+         * 2：カテゴリ選択で問題解答（SelectCategoryFragment、CategoryQuizResultFragment）
+         * 3：ランダムで問題解答（SelectRandomFragment）
          */
         switch (id){
             case 0:// 一問一答の問題作成
@@ -155,11 +156,11 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 HashMap<String, String> jsonParceData3 = new HashMap<String, String>();
 
                 try {
-                    String query = URLEncodedUtils.format(value3, "UTF-8");
-                    HttpGet get = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query);
+                    String query3 = URLEncodedUtils.format(value3, "UTF-8");
+                    HttpGet get3 = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query3);
 
                     // リクエスト送信
-                    HttpResponse response = client3.execute(get);
+                    HttpResponse response = client3.execute(get3);
                     // 取得
                     HttpEntity entity = response.getEntity();
                     responseData3 = EntityUtils.toString(entity, "UTF-8");
@@ -195,7 +196,56 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
 
                 break;
+            case 3:// ランダムで問題解答
+                // URL指定
+                HttpClient client4 = new DefaultHttpClient();
 
+                // パラメータの設定
+                ArrayList<NameValuePair> value4 = new ArrayList<NameValuePair>();
+                value4.add( new BasicNameValuePair("kentei_id", "1"));
+                value4.add( new BasicNameValuePair("employ", "2012"));
+                value4.add( new BasicNameValuePair("grade", "3"));
+                value4.add( new BasicNameValuePair("category_id", "1"));
+                value4.add( new BasicNameValuePair("item", "1"));
+
+                String responseData4 = null;
+                HashMap<String, String> jsonParceData4 = new HashMap<String, String>();
+
+                try {
+                    String query4 = URLEncodedUtils.format(value4, "UTF-8");
+                    HttpGet get4 = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query4);
+
+                    // リクエスト送信
+                    HttpResponse response = client4.execute(get4);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData4 = EntityUtils.toString(entity, "UTF-8");
+
+
+                    // jsonパース
+                    JSONObject json4 = new JSONObject(responseData4);
+
+                    jsonParceData4.put("sentence", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
+                    jsonParceData4.put("right_answer", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
+                    jsonParceData4.put("wrong_answer1", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
+                    jsonParceData4.put("wrong_answer2", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
+                    jsonParceData4.put("wrong_answer3", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+
+                    Log.v("sentence >>>>>>>>", jsonParceData4.get("sentence"));
+                    Log.v("right_answer >>>>>>>>", jsonParceData4.get("right_answer"));
+                    Log.v("wrong_answer1 >>>>>>>>", jsonParceData4.get("wrong_answer1"));
+                    Log.v("wrong_answer2 >>>>>>>>", jsonParceData4.get("wrong_answer2"));
+                    Log.v("wrong_answer3 >>>>>>>>", jsonParceData4.get("wrong_answer3"));
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                returnData = jsonParceData4;
+
+                break;
         }
 
         return returnData;
