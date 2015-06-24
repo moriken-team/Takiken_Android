@@ -10,8 +10,12 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +30,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,14 +40,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * create an instance of this fragment.
  */
 // 位置情報を利用するには「implements LocationListener」が必要
-public class MapsFragment extends Fragment  implements LocationListener {
+public class MapsFragment extends Fragment  implements LocationListener, LoaderManager.LoaderCallbacks<ArrayList<HashMap>> {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 //    private static View view;
 
     private LocationManager mLocationManager;
-
-
 
     public static MapsFragment newInstance(int MapsSection) {
         // フラグメントの作成
@@ -70,6 +75,8 @@ public class MapsFragment extends Fragment  implements LocationListener {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_maps, container, false);
 
+
+
         return view;
     }
 
@@ -97,9 +104,6 @@ public class MapsFragment extends Fragment  implements LocationListener {
 
         super.onPause();
     }
-
-
-
 
     /* ---------- START LocationListenerのメソッド（位置情報） ---------- */
     @Override
@@ -140,10 +144,6 @@ public class MapsFragment extends Fragment  implements LocationListener {
     }
     /* ---------- END LocationListenerのメソッド（位置情報） ---------- */
 
-
-
-
-
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -177,26 +177,25 @@ public class MapsFragment extends Fragment  implements LocationListener {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);// 拡大縮小ボタン表示
 
-        LatLng morioka = new LatLng(39.703531, 141.152667);// 盛岡
-        LatLng takizawa = new LatLng(39.734694, 141.077056);// 滝沢
+        LatLng takizawa = new LatLng(39.734693, 141.077097);// 滝沢
 
         CameraPosition.Builder camerapos = new CameraPosition.Builder();// 表示位置の作成
-        camerapos.target(morioka);// カメラの表示位置の指定
+        camerapos.target(takizawa);// カメラの表示位置の指定
         camerapos.zoom(13.0f);// ズームレベル
         camerapos.bearing(0);// カメラの向きの指定(北向きなので０）
         camerapos.tilt(25.0f);// カメラの傾き設定
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(camerapos.build()));// マップの表示位置変更
 
-        MarkerOptions options = new MarkerOptions();// ピンの設定
-        options.position(morioka);// ピンの場所を指定
-        options.title("盛岡");// マーカーの吹き出しの設定
-        mMap.addMarker(options);// ピンの設置
+        /* ---------- START Loader（非同期処理）初期設定 ---------- */
+        // Loader（HttpHttpAsyncTaskLoader2クラス）に渡す引数を設定
+        Bundle data = new Bundle();
+        data.putString("data", "data");
 
-        options.position(takizawa);
-        options.title("滝沢");
-        mMap.addMarker(options);
+        // Loader（HttpHttpAsyncTaskLoader2クラス）の初期化と開始
+        getLoaderManager().initLoader(LOADER_ID, data, MapsFragment.this);
+        /* ---------- END Loader（非同期処理）初期設定 ---------- */
 
-
+        //ピンのクリックリスナー
 //        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 //            @Override
 //            public boolean onMarkerClick(Marker marker) {
@@ -220,7 +219,7 @@ public class MapsFragment extends Fragment  implements LocationListener {
             public void onInfoWindowClick(Marker marker) {
                 // TODO Auto-generated method stub
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//
+
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, QuestionsAndAnswersFragment.newInstance())
                         .commit();
@@ -228,12 +227,52 @@ public class MapsFragment extends Fragment  implements LocationListener {
         });
     }
 
+    /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
+    private static final int LOADER_ID = 1;
+
+    @Override
+    public Loader<ArrayList<HashMap>> onCreateLoader(int id, Bundle data) {// 非同期処理を行うLoaderを生成する
+        // 非同期処理に渡すデータを設定
+        HashMap<String, String> requestData = new HashMap<String, String>();
+        requestData.put("data", data.getString("data"));
+
+        return new HttpAsyncTaskLoader2(getActivity(), requestData, id);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<HashMap>> loader, final ArrayList<HashMap> data) {// 非同期処理完了時
+        // ここでView等にデータをセット
+
+        Log.v("API response", ((HashMap<String, String>) data.get(0)).get("name"));
+        String test = String.valueOf(data.size());// 数値から文字列にキャスト変換
+        Log.v("data size", test);
 
 
+        for (int i = 0; i < data.size(); i++) {// 登録スポット数繰り返す
+            String str = ((HashMap<String, String>) data.get(i)).get("latitude");// キャスト変換
+            Double latitude = Double.valueOf(str);// 緯度
 
+            String str2 = ((HashMap<String, String>) data.get(i)).get("longitude");// キャスト変換
+            Double longitude = Double.valueOf(str2);// 経度
 
+            String spotName = ((HashMap<String, String>) data.get(i)).get("name");// スポット名
 
+            MarkerOptions options = new MarkerOptions();// ピンの設定
+            options.position(new LatLng(latitude, longitude));// ピンの場所を指定
+            options.title(spotName);// マーカーの吹き出しの設定
+            mMap.addMarker(options);// ピンの設置
+        }
 
+        // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）
+        getLoaderManager().destroyLoader(loader.getId());// loader.getId() == LOADER_ID（initLoaderの第一引数）
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<HashMap>> loader) {// Loaderが破棄される時に呼び出し
+        // Loaderが参照しているデータを削除する
+
+    }
+    /* ---------- END LoaderCallback（非同期処理）コールバック処理 ---------- */
 
     // FragmentがActivityに関連付けられた時に一度だけ呼ばれる。
     @Override

@@ -24,7 +24,7 @@ import java.util.HashMap;
  * Use the {@link SelectRandomFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SelectRandomFragment extends Fragment  implements LoaderManager.LoaderCallbacks<HashMap<String, String>>{
+public class SelectRandomFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
     public static SelectRandomFragment newInstance() {
         SelectRandomFragment fragment = new SelectRandomFragment();
         Bundle args = new Bundle();

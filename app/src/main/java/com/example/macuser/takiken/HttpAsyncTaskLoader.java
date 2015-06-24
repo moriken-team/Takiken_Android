@@ -30,7 +30,7 @@ import java.util.HashMap;
 /* ---------- START AsyncTaskLoader（非同期処理）ロード処理 ---------- */
 
 // Http通信でAPIを利用する際の非同期通信クラス（このクラスで非同期処理してデータを受け渡している）
-// 受け取る型は連想配列（HashMap）
+// 型：HashMap<String, String>
 public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>> {
 
     /** 引数 */
@@ -39,6 +39,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
     /** 非同期処理での結果を格納 */
     private HashMap<String, String> returnData;
+    private HashMap<String, HashMap> returnData2;
 
     public HttpAsyncTaskLoader(Context context, HashMap<String, String> requestData, int id) {
         super(context);
@@ -58,8 +59,9 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
          * 1：選択問題の問題作成（MultipleChoiceFragment）
          * 2：カテゴリ選択で問題解答（SelectCategoryFragment、CategoryQuizResultFragment）
          * 3：ランダムで問題解答（SelectRandomFragment）
+         * 4：緯度経度の取得（MapsFragment）
          */
-        switch (id){
+        switch (id) {
             case 0:// 一問一答の問題作成
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
@@ -146,9 +148,10 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 // パラメータの設定
                 ArrayList<NameValuePair> value3 = new ArrayList<NameValuePair>();
-                value3.add( new BasicNameValuePair("kentei_id", "1"));
-                value3.add( new BasicNameValuePair("employ", "2012"));
-                value3.add( new BasicNameValuePair("grade", "3"));
+                value3.add( new BasicNameValuePair("kentei_id", "6"));
+                value3.add( new BasicNameValuePair("employ", "0"));
+                value3.add( new BasicNameValuePair("public_flag", "1"));
+//                value3.add( new BasicNameValuePair("grade", "0"));
                 value3.add( new BasicNameValuePair("category_id", "1"));
                 value3.add( new BasicNameValuePair("item", "1"));
 
@@ -171,24 +174,35 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                     jsonParceData3.put("sentence", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
                     jsonParceData3.put("right_answer", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
-                    jsonParceData3.put("wrong_answer1", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
-                    jsonParceData3.put("wrong_answer2", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
-                    jsonParceData3.put("wrong_answer3", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+                    jsonParceData3.put("type", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type"));
                     jsonParceData3.put("category_id", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("category_id"));
+
+                    if (json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type").equals("1")) {// 四択問題の場合
+                        Log.v("形式：四択問題", "誤答選択肢を追加");
+
+                        jsonParceData3.put("wrong_answer1", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
+                        jsonParceData3.put("wrong_answer2", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
+                        jsonParceData3.put("wrong_answer3", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+
+                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData3.get("wrong_answer1"));
+                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData3.get("wrong_answer2"));
+                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData3.get("wrong_answer3"));
+                    } else {
+                        Log.v("エラー", "問題形式エラー");
+                    }
+
+
 
                     Log.v("sentence >>>>>>>>", jsonParceData3.get("sentence"));
                     Log.v("right_answer >>>>>>>>", jsonParceData3.get("right_answer"));
-                    Log.v("wrong_answer1 >>>>>>>>", jsonParceData3.get("wrong_answer1"));
-                    Log.v("wrong_answer2 >>>>>>>>", jsonParceData3.get("wrong_answer2"));
-                    Log.v("wrong_answer3 >>>>>>>>", jsonParceData3.get("wrong_answer3"));
+                    Log.v("type >>>>>>>>", jsonParceData3.get("type"));
                     Log.v("category_id >>>>>>>>", jsonParceData3.get("category_id"));
 
 
 
                 } catch(IOException e) {
                     e.printStackTrace();
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -202,10 +216,11 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 // パラメータの設定
                 ArrayList<NameValuePair> value4 = new ArrayList<NameValuePair>();
-                value4.add( new BasicNameValuePair("kentei_id", "1"));
-                value4.add( new BasicNameValuePair("employ", "2012"));
-                value4.add( new BasicNameValuePair("grade", "3"));
-                value4.add( new BasicNameValuePair("category_id", "1"));
+                value4.add( new BasicNameValuePair("kentei_id", "6"));
+                value4.add( new BasicNameValuePair("employ", "0"));
+                value4.add( new BasicNameValuePair("public_flag", "1"));
+//                value4.add( new BasicNameValuePair("grade", "0"));
+//                value4.add( new BasicNameValuePair("category_id", "1"));
                 value4.add( new BasicNameValuePair("item", "1"));
 
                 String responseData4 = null;
@@ -227,15 +242,30 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                     jsonParceData4.put("sentence", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
                     jsonParceData4.put("right_answer", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
-                    jsonParceData4.put("wrong_answer1", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
-                    jsonParceData4.put("wrong_answer2", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
-                    jsonParceData4.put("wrong_answer3", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+                    jsonParceData4.put("type", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type"));
+
+                    if (json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type").equals("1")) {// 四択問題の場合
+                        Log.v("形式：四択問題", "誤答選択肢を追加");
+
+                        jsonParceData4.put("wrong_answer1", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
+                        jsonParceData4.put("wrong_answer2", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
+                        jsonParceData4.put("wrong_answer3", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+
+                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData4.get("wrong_answer1"));
+                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData4.get("wrong_answer2"));
+                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData4.get("wrong_answer3"));
+                    } else {
+                        Log.v("エラー", "問題形式エラー");
+                    }
+
+
 
                     Log.v("sentence >>>>>>>>", jsonParceData4.get("sentence"));
                     Log.v("right_answer >>>>>>>>", jsonParceData4.get("right_answer"));
-                    Log.v("wrong_answer1 >>>>>>>>", jsonParceData4.get("wrong_answer1"));
-                    Log.v("wrong_answer2 >>>>>>>>", jsonParceData4.get("wrong_answer2"));
-                    Log.v("wrong_answer3 >>>>>>>>", jsonParceData4.get("wrong_answer3"));
+                    Log.v("type >>>>>>>>", jsonParceData4.get("type"));
+
+
+
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
@@ -300,4 +330,6 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
     }
 }
 /* ---------- END AsyncTaskLoader（非同期処理）ロード処理 ---------- */
+
+
 
