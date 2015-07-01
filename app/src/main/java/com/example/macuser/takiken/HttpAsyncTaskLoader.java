@@ -2,6 +2,7 @@ package com.example.macuser.takiken;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -59,35 +60,36 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
          * 1：選択問題の問題作成（MultipleChoiceFragment）
          * 2：カテゴリ選択で問題解答（SelectCategoryFragment、CategoryQuizResultFragment）
          * 3：ランダムで問題解答（SelectRandomFragment）
-         * 4：緯度経度の取得（MapsFragment）
+         * 4：ログイン
+         * 5：ユーザ登録
          */
         switch (id) {
             case 0:// 一問一答の問題作成
-                HttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
+                HttpClient client0 = new DefaultHttpClient();
+                HttpPost post0 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
                 // パラメータの設定
-                ArrayList<NameValuePair> value = new ArrayList<NameValuePair>();
-                value.add( new BasicNameValuePair("kentei_id", "1"));
-                value.add( new BasicNameValuePair("user_id", "1"));
-                value.add( new BasicNameValuePair("type", "2"));
-                value.add( new BasicNameValuePair("grade", "1"));
-                value.add( new BasicNameValuePair("number", "1"));
-                value.add( new BasicNameValuePair("sentence", requestData.get("question")));
-                value.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
-                value.add( new BasicNameValuePair("description", "012345"));
-                value.add( new BasicNameValuePair("public_flag", "1"));
-                value.add( new BasicNameValuePair("category_id", requestData.get("category")));
-                value.add( new BasicNameValuePair("item", "1"));
+                ArrayList<NameValuePair> value0 = new ArrayList<NameValuePair>();
+                value0.add( new BasicNameValuePair("kentei_id", "1"));
+                value0.add( new BasicNameValuePair("user_id", "1"));
+                value0.add( new BasicNameValuePair("type", "2"));
+                value0.add( new BasicNameValuePair("grade", "1"));
+                value0.add( new BasicNameValuePair("number", "1"));
+                value0.add( new BasicNameValuePair("sentence", requestData.get("question")));
+                value0.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
+                value0.add( new BasicNameValuePair("description", "012345"));
+                value0.add( new BasicNameValuePair("public_flag", "1"));
+                value0.add( new BasicNameValuePair("category_id", requestData.get("category")));
+                value0.add( new BasicNameValuePair("item", "1"));
 
-                String responseData = null;
+                String responseData0 = null;
 
                 try {
-                    post.setEntity(new UrlEncodedFormEntity(value, "UTF-8"));
+                    post0.setEntity(new UrlEncodedFormEntity(value0, "UTF-8"));
                     // リクエスト送信
-                    HttpResponse response = client.execute(post);
+                    HttpResponse response = client0.execute(post0);
                     // 取得
                     HttpEntity entity = response.getEntity();
-                    responseData = EntityUtils.toString(entity, "UTF-8");
+                    responseData0 = EntityUtils.toString(entity, "UTF-8");
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
@@ -96,43 +98,43 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 Log.v("mArg", requestData.get("question"));
                 Log.v("mArg", requestData.get("answer"));
 
-//                returnData = responseData;
+//                returnData = responseData0;
 
                 break;
             case 1:// 選択問題の問題作成
-                HttpClient client2 = new DefaultHttpClient();
-                HttpPost post2 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
+                HttpClient client1 = new DefaultHttpClient();
+                HttpPost post1 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
                 // パラメータの設定
-                ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
-                value2.add( new BasicNameValuePair("kentei_id", "1"));
-                value2.add( new BasicNameValuePair("user_id", "1"));
-                value2.add( new BasicNameValuePair("type", "1"));
-                value2.add( new BasicNameValuePair("grade", "1"));
-                value2.add( new BasicNameValuePair("number", "1"));
-                value2.add( new BasicNameValuePair("sentence", requestData.get("question")));
-                value2.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
-                value2.add( new BasicNameValuePair("wrong_answer1", requestData.get("incorrect1")));
-                value2.add( new BasicNameValuePair("wrong_answer2", requestData.get("incorrect2")));
-                value2.add( new BasicNameValuePair("wrong_answer3", requestData.get("incorrect3")));
-                value2.add( new BasicNameValuePair("description", "012345"));
-                value2.add( new BasicNameValuePair("public_flag", "1"));
-                value2.add( new BasicNameValuePair("category_id", requestData.get("category")));
-                value2.add( new BasicNameValuePair("item", "1"));
+                ArrayList<NameValuePair> value1 = new ArrayList<NameValuePair>();
+                value1.add( new BasicNameValuePair("kentei_id", "1"));
+                value1.add( new BasicNameValuePair("user_id", "1"));
+                value1.add( new BasicNameValuePair("type", "1"));
+                value1.add( new BasicNameValuePair("grade", "1"));
+                value1.add( new BasicNameValuePair("number", "1"));
+                value1.add( new BasicNameValuePair("sentence", requestData.get("question")));
+                value1.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
+                value1.add( new BasicNameValuePair("wrong_answer1", requestData.get("incorrect1")));
+                value1.add( new BasicNameValuePair("wrong_answer2", requestData.get("incorrect2")));
+                value1.add( new BasicNameValuePair("wrong_answer3", requestData.get("incorrect3")));
+                value1.add( new BasicNameValuePair("description", "012345"));
+                value1.add( new BasicNameValuePair("public_flag", "1"));
+                value1.add( new BasicNameValuePair("category_id", requestData.get("category")));
+                value1.add( new BasicNameValuePair("item", "1"));
 
-                String responseData2 = null;
+                String responseData1 = null;
 
                 try {
-                    post2.setEntity(new UrlEncodedFormEntity(value2, "UTF-8"));
+                    post1.setEntity(new UrlEncodedFormEntity(value1, "UTF-8"));
                     // リクエスト送信
-                    HttpResponse response = client2.execute(post2);
+                    HttpResponse response = client1.execute(post1);
                     // 取得
                     HttpEntity entity = response.getEntity();
-                    responseData2 = EntityUtils.toString(entity, "UTF-8");
+                    responseData1 = EntityUtils.toString(entity, "UTF-8");
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
 
-//                returnData = responseData2;
+//                returnData = responseData1;
 
                 Log.v("mArg", requestData.get("category"));
                 Log.v("mArg", requestData.get("question"));
@@ -144,6 +146,75 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 break;
             case 2:// カテゴリ選択で問題解答
                 // URL指定
+                HttpClient client2 = new DefaultHttpClient();
+
+                // パラメータの設定
+                ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
+                value2.add( new BasicNameValuePair("kentei_id", "6"));
+                value2.add( new BasicNameValuePair("employ", "0"));
+                value2.add( new BasicNameValuePair("public_flag", "1"));
+//                value2.add( new BasicNameValuePair("grade", "0"));
+                value2.add( new BasicNameValuePair("category_id", "1"));
+                value2.add( new BasicNameValuePair("item", "1"));
+
+                String responseData2 = null;
+                HashMap<String, String> jsonParceData2 = new HashMap<String, String>();
+
+                try {
+                    String query2 = URLEncodedUtils.format(value2, "UTF-8");
+                    HttpGet get2 = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query2);
+
+                    // リクエスト送信
+                    HttpResponse response = client2.execute(get2);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData2 = EntityUtils.toString(entity, "UTF-8");
+
+
+                    /* ---------- START jsonパース ---------- */
+                    JSONObject json2 = new JSONObject(responseData2);
+
+                    jsonParceData2.put("sentence", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
+                    jsonParceData2.put("right_answer", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
+                    jsonParceData2.put("type", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type"));
+                    jsonParceData2.put("category_id", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("category_id"));
+
+                    if (json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type").equals("1")) {// 四択問題の場合
+                        Log.v("形式：四択問題", "誤答選択肢を追加");
+
+                        jsonParceData2.put("wrong_answer1", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
+                        jsonParceData2.put("wrong_answer2", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
+                        jsonParceData2.put("wrong_answer3", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
+
+                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData2.get("wrong_answer1"));
+                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData2.get("wrong_answer2"));
+                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData2.get("wrong_answer3"));
+                    } else {
+                        Log.v("エラー", "問題形式エラー");
+                    }
+                    /* ---------- END jsonパース ---------- */
+
+
+
+                    Log.v("sentence >>>>>>>>", jsonParceData2.get("sentence"));
+                    Log.v("right_answer >>>>>>>>", jsonParceData2.get("right_answer"));
+                    Log.v("type >>>>>>>>", jsonParceData2.get("type"));
+                    Log.v("category_id >>>>>>>>", jsonParceData2.get("category_id"));
+
+
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                returnData = jsonParceData2;
+
+
+                break;
+            case 3:// ランダムで問題解答
+                // URL指定
                 HttpClient client3 = new DefaultHttpClient();
 
                 // パラメータの設定
@@ -152,7 +223,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 value3.add( new BasicNameValuePair("employ", "0"));
                 value3.add( new BasicNameValuePair("public_flag", "1"));
 //                value3.add( new BasicNameValuePair("grade", "0"));
-                value3.add( new BasicNameValuePair("category_id", "1"));
+//                value3.add( new BasicNameValuePair("category_id", "1"));
                 value3.add( new BasicNameValuePair("item", "1"));
 
                 String responseData3 = null;
@@ -169,13 +240,12 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     responseData3 = EntityUtils.toString(entity, "UTF-8");
 
 
-                    // jsonパース
+                    /* ---------- START jsonパース ---------- */
                     JSONObject json3 = new JSONObject(responseData3);
 
                     jsonParceData3.put("sentence", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
                     jsonParceData3.put("right_answer", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
                     jsonParceData3.put("type", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type"));
-                    jsonParceData3.put("category_id", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("category_id"));
 
                     if (json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type").equals("1")) {// 四択問題の場合
                         Log.v("形式：四択問題", "誤答選択肢を追加");
@@ -190,13 +260,13 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     } else {
                         Log.v("エラー", "問題形式エラー");
                     }
+                    /* ---------- END jsonパース ---------- */
 
 
 
                     Log.v("sentence >>>>>>>>", jsonParceData3.get("sentence"));
                     Log.v("right_answer >>>>>>>>", jsonParceData3.get("right_answer"));
                     Log.v("type >>>>>>>>", jsonParceData3.get("type"));
-                    Log.v("category_id >>>>>>>>", jsonParceData3.get("category_id"));
 
 
 
@@ -208,72 +278,94 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 returnData = jsonParceData3;
 
-
                 break;
-            case 3:// ランダムで問題解答
-                // URL指定
+            case 4:// ログイン
                 HttpClient client4 = new DefaultHttpClient();
-
+                HttpPost post4 = new HttpPost("http://sakumon.jp/app/LK_API/logins/add.json");
                 // パラメータの設定
                 ArrayList<NameValuePair> value4 = new ArrayList<NameValuePair>();
-                value4.add( new BasicNameValuePair("kentei_id", "6"));
-                value4.add( new BasicNameValuePair("employ", "0"));
-                value4.add( new BasicNameValuePair("public_flag", "1"));
-//                value4.add( new BasicNameValuePair("grade", "0"));
-//                value4.add( new BasicNameValuePair("category_id", "1"));
-                value4.add( new BasicNameValuePair("item", "1"));
+                value4.add( new BasicNameValuePair("username", requestData.get("username")));
+                value4.add( new BasicNameValuePair("password", requestData.get("password")));
 
                 String responseData4 = null;
                 HashMap<String, String> jsonParceData4 = new HashMap<String, String>();
 
                 try {
-                    String query4 = URLEncodedUtils.format(value4, "UTF-8");
-                    HttpGet get4 = new HttpGet("http://sakumon.jp/app/LK_API/problems/index.json" + "?" + query4);
-
+                    post4.setEntity(new UrlEncodedFormEntity(value4, "UTF-8"));
                     // リクエスト送信
-                    HttpResponse response = client4.execute(get4);
+                    HttpResponse response = client4.execute(post4);
                     // 取得
                     HttpEntity entity = response.getEntity();
                     responseData4 = EntityUtils.toString(entity, "UTF-8");
 
-
-                    // jsonパース
+                    /* ---------- START jsonパース ---------- */
                     JSONObject json4 = new JSONObject(responseData4);
 
-                    jsonParceData4.put("sentence", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("sentence"));
-                    jsonParceData4.put("right_answer", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("right_answer"));
-                    jsonParceData4.put("type", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type"));
-
-                    if (json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("type").equals("1")) {// 四択問題の場合
-                        Log.v("形式：四択問題", "誤答選択肢を追加");
-
-                        jsonParceData4.put("wrong_answer1", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
-                        jsonParceData4.put("wrong_answer2", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
-                        jsonParceData4.put("wrong_answer3", json4.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
-
-                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData4.get("wrong_answer1"));
-                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData4.get("wrong_answer2"));
-                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData4.get("wrong_answer3"));
-                    } else {
-                        Log.v("エラー", "問題形式エラー");
-                    }
+                    jsonParceData4.put("url", json4.getJSONObject("error").getString("code"));
 
 
-
-                    Log.v("sentence >>>>>>>>", jsonParceData4.get("sentence"));
-                    Log.v("right_answer >>>>>>>>", jsonParceData4.get("right_answer"));
-                    Log.v("type >>>>>>>>", jsonParceData4.get("type"));
-
+                    /* ---------- END jsonパース ---------- */
 
 
                 } catch(IOException e) {
                     e.printStackTrace();
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+
+
                 returnData = jsonParceData4;
+
+                break;
+            case 5:// ユーザ登録
+                HttpClient client5 = new DefaultHttpClient();
+                HttpPost post5 = new HttpPost("http://sakumon.jp/app/LK_API/users.json");
+                // パラメータの設定
+                ArrayList<NameValuePair> value5 = new ArrayList<NameValuePair>();
+                value5.add( new BasicNameValuePair("username", requestData.get("username")));
+                value5.add( new BasicNameValuePair("email", requestData.get("email")));
+                value5.add( new BasicNameValuePair("password", requestData.get("password")));
+
+                String responseData5 = null;
+                HashMap<String, String> jsonParceData5 = new HashMap<String, String>();
+
+                try {
+                    post5.setEntity(new UrlEncodedFormEntity(value5, "UTF-8"));
+                    // リクエスト送信
+                    HttpResponse response = client5.execute(post5);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData5 = EntityUtils.toString(entity, "UTF-8");
+
+
+                    /* ---------- START jsonパース ---------- */
+                    JSONObject json5 = new JSONObject(responseData5);
+
+
+                    if (json5.isNull("response")) {
+                        jsonParceData5.put("code", json5.getJSONObject("error").getString("code"));
+                    } else {
+                        jsonParceData5.put("code", json5.getJSONObject("response").getString("code"));
+                    }
+
+
+
+                    /* ---------- END jsonパース ---------- */
+
+                } catch(IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.v("user", requestData.get("username"));
+                Log.v("emai", requestData.get("email"));
+                Log.v("pass", requestData.get("password"));
+
+                Log.v("response", responseData5);
+
+                returnData = jsonParceData5;
 
                 break;
         }

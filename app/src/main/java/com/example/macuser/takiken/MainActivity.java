@@ -2,18 +2,22 @@ package com.example.macuser.takiken;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -31,6 +35,27 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+        // SharedPreferences取得
+        SharedPreferences pref = getSharedPreferences("user_data", Context.MODE_PRIVATE);
+        // 設定値の取得
+        String username = pref.getString("username", "1");
+
+        Toast.makeText(this, username, Toast.LENGTH_LONG).show();
+
+        Log.v("ログインチェック", username);
+
+        if (!username.equals("おお")) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);// どのクラスを対象にするか
+            startActivity(intent);// 画面遷移
+        }
+
+
+
+
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -124,8 +149,25 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        // ログアウト
+        if (id == R.id.logout) {
+            // プリファレンスの準備
+            // MODE_PRIVATEでこのアプリだけが使用できるように設定
+            SharedPreferences pref = getSharedPreferences("user_data", Context.MODE_PRIVATE);
+
+            // プリファレンスに書き込むためのEditorオブジェクト取得
+            SharedPreferences.Editor editor = pref.edit();
+            // 削除
+            editor.remove("username");
+            editor.remove("password");
+            // 削除の反映
+            editor.commit();
+
+            Toast.makeText(this, "ログアウトしました", Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);// どのクラスを対象にするか
+            startActivity(intent);// 画面遷移
+
             return true;
         }
 
