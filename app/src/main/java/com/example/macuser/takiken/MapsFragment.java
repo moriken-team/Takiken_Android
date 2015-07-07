@@ -221,7 +221,7 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, QuestionsAndAnswersFragment.newInstance())
+                        .replace(R.id.container, MapsQuizMenuFragment.newInstance())
                         .commit();
             }
         });

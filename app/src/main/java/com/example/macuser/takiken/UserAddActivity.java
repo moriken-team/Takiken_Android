@@ -89,7 +89,7 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
             Intent intent = new Intent(UserAddActivity.this, LoginActivity.class);// どのクラスを対象にするか
             startActivity(intent);// 画面遷移
         } else {
-            Toast.makeText(this, "入力エラー", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "未入力の項目があります。", Toast.LENGTH_LONG).show();
         }
 
         // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）

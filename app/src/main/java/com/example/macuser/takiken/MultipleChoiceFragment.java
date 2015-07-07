@@ -77,15 +77,12 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
                 // 選択したアイテム取得
                 String selectedCategory = (String) item.getSelectedItem();
 
-
                 // 選択したアイテムの位置を取得
                 String categoryPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
 
                 // ログで確認
                 Log.v("spinner item", selectedCategory);
                 Log.v("spinner position", categoryPosition);
-
-
 
                 EditText question = (EditText) getActivity().findViewById(R.id.mc_question);
                 EditText answer = (EditText) getActivity().findViewById(R.id.mc_answer);
@@ -139,9 +136,14 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
     public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
 
-//        Log.v("API response", data);
+        Log.v("API response", data.get("code"));
+        Log.v("API response", data.get("message"));
 
-        Toast.makeText(getActivity(), "問題を登録しました。", Toast.LENGTH_LONG).show();
+        if (data.get("code").equals("201")) {
+            Toast.makeText(getActivity(), "問題を登録しました。", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "未入力の項目があります。", Toast.LENGTH_LONG).show();
+        }
 
         // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）
         getLoaderManager().destroyLoader(loader.getId());// loader.getId() == LOADER_ID（initLoaderの第一引数）

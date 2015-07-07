@@ -82,6 +82,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 value0.add( new BasicNameValuePair("item", "1"));
 
                 String responseData0 = null;
+                HashMap<String, String> jsonParceData0 = new HashMap<String, String>();
 
                 try {
                     post0.setEntity(new UrlEncodedFormEntity(value0, "UTF-8"));
@@ -90,15 +91,25 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     // 取得
                     HttpEntity entity = response.getEntity();
                     responseData0 = EntityUtils.toString(entity, "UTF-8");
+
+                    /* ---------- START jsonパース ---------- */
+                    JSONObject json0 = new JSONObject(responseData0);
+
+                    if (json0.isNull("response")) {
+                        jsonParceData0.put("code", json0.getJSONObject("error").getString("code"));
+                        jsonParceData0.put("message", json0.getJSONObject("error").getString("message"));
+                    } else {
+                        jsonParceData0.put("code", json0.getJSONObject("response").getString("code"));
+                        jsonParceData0.put("message", json0.getJSONObject("response").getString("message"));
+                    }
+                    /* ---------- END jsonパース ---------- */
                 } catch(IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Log.v("mArg", requestData.get("category"));
-                Log.v("mArg", requestData.get("question"));
-                Log.v("mArg", requestData.get("answer"));
-
-//                returnData = responseData0;
+                returnData = jsonParceData0;
 
                 break;
             case 1:// 選択問題の問題作成
@@ -122,6 +133,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 value1.add( new BasicNameValuePair("item", "1"));
 
                 String responseData1 = null;
+                HashMap<String, String> jsonParceData1 = new HashMap<String, String>();
 
                 try {
                     post1.setEntity(new UrlEncodedFormEntity(value1, "UTF-8"));
@@ -130,18 +142,26 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     // 取得
                     HttpEntity entity = response.getEntity();
                     responseData1 = EntityUtils.toString(entity, "UTF-8");
+
+                    /* ---------- START jsonパース ---------- */
+                    JSONObject json1 = new JSONObject(responseData1);
+
+                    if (json1.isNull("response")) {
+                        jsonParceData1.put("code", json1.getJSONObject("error").getString("code"));
+                        jsonParceData1.put("message", json1.getJSONObject("error").getString("message"));
+                    } else {
+                        jsonParceData1.put("code", json1.getJSONObject("response").getString("code"));
+                        jsonParceData1.put("message", json1.getJSONObject("response").getString("message"));
+                    }
+
+                    /* ---------- END jsonパース ---------- */
                 } catch(IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-//                returnData = responseData1;
-
-                Log.v("mArg", requestData.get("category"));
-                Log.v("mArg", requestData.get("question"));
-                Log.v("mArg", requestData.get("answer"));
-                Log.v("mArg", requestData.get("incorrect1"));
-                Log.v("mArg", requestData.get("incorrect2"));
-                Log.v("mArg", requestData.get("incorrect3"));
+                returnData = jsonParceData1;
 
                 break;
             case 2:// カテゴリ選択で問題解答
@@ -170,7 +190,6 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     HttpEntity entity = response.getEntity();
                     responseData2 = EntityUtils.toString(entity, "UTF-8");
 
-
                     /* ---------- START jsonパース ---------- */
                     JSONObject json2 = new JSONObject(responseData2);
 
@@ -185,24 +204,10 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                         jsonParceData2.put("wrong_answer1", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
                         jsonParceData2.put("wrong_answer2", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
                         jsonParceData2.put("wrong_answer3", json2.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
-
-                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData2.get("wrong_answer1"));
-                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData2.get("wrong_answer2"));
-                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData2.get("wrong_answer3"));
                     } else {
                         Log.v("エラー", "問題形式エラー");
                     }
                     /* ---------- END jsonパース ---------- */
-
-
-
-                    Log.v("sentence >>>>>>>>", jsonParceData2.get("sentence"));
-                    Log.v("right_answer >>>>>>>>", jsonParceData2.get("right_answer"));
-                    Log.v("type >>>>>>>>", jsonParceData2.get("type"));
-                    Log.v("category_id >>>>>>>>", jsonParceData2.get("category_id"));
-
-
-
                 } catch(IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -210,7 +215,6 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 }
 
                 returnData = jsonParceData2;
-
 
                 break;
             case 3:// ランダムで問題解答
@@ -253,23 +257,10 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                         jsonParceData3.put("wrong_answer1", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer1"));
                         jsonParceData3.put("wrong_answer2", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer2"));
                         jsonParceData3.put("wrong_answer3", json3.getJSONObject("response").getJSONArray("Problems").getJSONObject(0).getJSONObject("Problem").getString("wrong_answer3"));
-
-                        Log.v("wrong_answer1 >>>>>>>>", jsonParceData3.get("wrong_answer1"));
-                        Log.v("wrong_answer2 >>>>>>>>", jsonParceData3.get("wrong_answer2"));
-                        Log.v("wrong_answer3 >>>>>>>>", jsonParceData3.get("wrong_answer3"));
                     } else {
                         Log.v("エラー", "問題形式エラー");
                     }
                     /* ---------- END jsonパース ---------- */
-
-
-
-                    Log.v("sentence >>>>>>>>", jsonParceData3.get("sentence"));
-                    Log.v("right_answer >>>>>>>>", jsonParceData3.get("right_answer"));
-                    Log.v("type >>>>>>>>", jsonParceData3.get("type"));
-
-
-
                 } catch(IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -302,18 +293,12 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     JSONObject json4 = new JSONObject(responseData4);
 
                     jsonParceData4.put("url", json4.getJSONObject("error").getString("code"));
-
-
                     /* ---------- END jsonパース ---------- */
-
-
                 } catch(IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
 
                 returnData = jsonParceData4;
 
@@ -338,21 +323,17 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                     HttpEntity entity = response.getEntity();
                     responseData5 = EntityUtils.toString(entity, "UTF-8");
 
-
                     /* ---------- START jsonパース ---------- */
                     JSONObject json5 = new JSONObject(responseData5);
 
-
                     if (json5.isNull("response")) {
                         jsonParceData5.put("code", json5.getJSONObject("error").getString("code"));
+                        jsonParceData5.put("message", json5.getJSONObject("error").getString("message"));
                     } else {
                         jsonParceData5.put("code", json5.getJSONObject("response").getString("code"));
+                        jsonParceData5.put("message", json5.getJSONObject("response").getString("message"));
                     }
-
-
-
                     /* ---------- END jsonパース ---------- */
-
                 } catch(IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
