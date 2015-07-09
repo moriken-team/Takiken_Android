@@ -1,7 +1,10 @@
 package com.example.macuser.takiken;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -24,6 +27,9 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class QuestionsAndAnswersFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
+
     public static QuestionsAndAnswersFragment newInstance() {
         QuestionsAndAnswersFragment fragment = new QuestionsAndAnswersFragment();
         Bundle args = new Bundle();
@@ -44,7 +50,7 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_questions_and_answers, container, false);
+        final View view = inflater.inflate(R.layout.fragment_questions_and_answers, container, false);
 
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成
@@ -73,6 +79,13 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* ---------- START プログレスダイアログ ---------- */
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("now loading ...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                /* ---------- END プログレスダイアログ ---------- */
+
                 // レイアウトからSpinnerを取得
                 Spinner item = (Spinner) getActivity().findViewById(R.id.qaa_category);
                 // 選択したアイテム取得
@@ -110,11 +123,6 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     }
 
 
-
-
-
-
-
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
     private static final int LOADER_ID = 0;
 
@@ -132,6 +140,10 @@ public class QuestionsAndAnswersFragment extends Fragment implements LoaderManag
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
 
         Log.v("API response", data.get("code"));
         Log.v("API response", data.get("message"));

@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +26,11 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class SelectRandomFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
+    int selectPosition = 0;
+    int quizLoop = 0;
+
     public static SelectRandomFragment newInstance() {
         SelectRandomFragment fragment = new SelectRandomFragment();
         Bundle args = new Bundle();
@@ -65,21 +71,25 @@ public class SelectRandomFragment extends Fragment implements LoaderManager.Load
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* ---------- START プログレスダイアログ ---------- */
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("now loading ...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                /* ---------- END プログレスダイアログ ---------- */
+
                 // レイアウトからSpinnerを取得
                 Spinner item = (Spinner) getActivity().findViewById(R.id.sr_count);
                 // 選択したアイテム取得
                 String selectedCount = (String) item.getSelectedItem();
 
-
                 // 選択したアイテムの位置を取得
+                selectPosition = item.getSelectedItemPosition();
                 String countPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
 
                 // ログで確認
                 Log.v("spinner item", selectedCount);
                 Log.v("spinner position", countPosition);
-
-
-
 
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
@@ -110,6 +120,22 @@ public class SelectRandomFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, final HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
+
+        switch (selectPosition) {
+            case 0:
+                quizLoop = 5;
+                break;
+            case 1:
+                quizLoop = 10;
+                break;
+            case 2:
+                quizLoop = 20;
+                break;
+        }
 
         Log.v("API response", data.get("sentence"));
 
@@ -119,7 +145,8 @@ public class SelectRandomFragment extends Fragment implements LoaderManager.Load
             @Override
             public void run() {
                 HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                countData.put("quizLoop", 1);
+                countData.put("quizCount", 1);
+                countData.put("quizLoop", quizLoop);
                 countData.put("correctAnswer", 0);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

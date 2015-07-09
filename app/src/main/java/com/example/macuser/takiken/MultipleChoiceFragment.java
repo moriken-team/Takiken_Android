@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -24,6 +25,9 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class MultipleChoiceFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
+
     public static MultipleChoiceFragment newInstance() {
         MultipleChoiceFragment fragment = new MultipleChoiceFragment();
         Bundle args = new Bundle();
@@ -72,6 +76,13 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* ---------- START プログレスダイアログ ---------- */
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("now loading ...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                /* ---------- END プログレスダイアログ ---------- */
+
                 // レイアウトからSpinnerを取得
                 Spinner item = (Spinner) getActivity().findViewById(R.id.mc_category);
                 // 選択したアイテム取得
@@ -135,6 +146,10 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
 
         Log.v("API response", data.get("code"));
         Log.v("API response", data.get("message"));

@@ -29,6 +29,7 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
         RandomQuizResultFragment fragment = new RandomQuizResultFragment();
         Bundle content = new Bundle();
         content.putString("answer", resultData.get("answer"));
+        content.putInt("quizCount", countData.get("quizCount"));
         content.putInt("quizLoop", countData.get("quizLoop"));
         content.putInt("correctAnswer", countData.get("correctAnswer"));
         fragment.setArguments(content);
@@ -52,10 +53,10 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
         View view = inflater.inflate(R.layout.fragment_random_quiz_result, container, false);
 
         TextView count = (TextView) view.findViewById(R.id.rqr_count);
-        count.setText(getArguments().getInt("quizLoop") + "/5");
+        count.setText(getArguments().getInt("quizCount") + "/" + getArguments().getInt("quizLoop"));
 
         TextView correct = (TextView) view.findViewById(R.id.rqr_correct);
-        correct.setText(getArguments().getInt("correctAnswer") + "/5");
+        correct.setText(getArguments().getInt("correctAnswer") + "/" + getArguments().getInt("quizLoop"));
 
         TextView result = (TextView) view.findViewById(R.id.rqr_result);
 
@@ -67,7 +68,7 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
             result.setText("✕ 不正解");
         }
 
-        if (getArguments().getInt("quizLoop") == 5) {
+        if (getArguments().getInt("quizCount") == getArguments().getInt("quizLoop")) {
             Button finish = (Button) view.findViewById(R.id.rqr_button);
             finish.setText("終了");
         }
@@ -81,7 +82,7 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getArguments().getInt("quizLoop") < 5) {
+                if (getArguments().getInt("quizCount") < getArguments().getInt("quizLoop")) {
                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                     Bundle data = new Bundle();
@@ -129,7 +130,8 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
             @Override
             public void run() {
                 HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                countData.put("quizLoop", getArguments().getInt("quizLoop") + 1);
+                countData.put("quizCount", getArguments().getInt("quizCount") + 1);
+                countData.put("quizLoop", getArguments().getInt("quizLoop"));
                 countData.put("correctAnswer", getArguments().getInt("correctAnswer"));
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

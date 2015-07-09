@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -20,6 +21,8 @@ import java.util.HashMap;
 
 
 public class UserAddActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<HashMap<String, String>>  {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +34,20 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                /* ---------- START プログレスダイアログ ---------- */
+                progressDialog = new ProgressDialog(UserAddActivity.this);
+                progressDialog.setMessage("now loading ...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                /* ---------- END プログレスダイアログ ---------- */
 
                 EditText username = (EditText) findViewById(R.id.add_username);
                 EditText email    = (EditText) findViewById(R.id.add_email);
                 EditText password = (EditText) findViewById(R.id.add_password);
 
-
                 Log.v("user", username.getText().toString());
                 Log.v("emai", email.getText().toString());
                 Log.v("pass", password.getText().toString());
-
 
                 String inputtedUserName = username.getText().toString();
                 String inputtedEmail    = email.getText().toString();
@@ -50,7 +56,6 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                 Bundle inputtedData = new Bundle();
-                Log.v("確認", "----------------------------------------");
                 inputtedData.putString("username", inputtedUserName);
                 inputtedData.putString("email", inputtedEmail);
                 inputtedData.putString("password", inputtedPassword);
@@ -79,9 +84,13 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
 
         Log.v("API response", data.get("code"));
-
+        Log.v("API response", data.get("message"));
 
         if (data.get("code").equals("201")) {
             Toast.makeText(this, "新規登録をしました。", Toast.LENGTH_LONG).show();

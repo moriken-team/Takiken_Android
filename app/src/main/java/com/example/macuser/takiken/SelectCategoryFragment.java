@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +26,9 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class SelectCategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
+
     public static SelectCategoryFragment newInstance() {
         SelectCategoryFragment fragment = new SelectCategoryFragment();
         Bundle args = new Bundle();
@@ -73,11 +77,17 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* ---------- START プログレスダイアログ ---------- */
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("now loading ...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                /* ---------- END プログレスダイアログ ---------- */
+
                 // レイアウトからSpinnerを取得
                 Spinner item = (Spinner) getActivity().findViewById(R.id.sc_category);
                 // 選択したアイテム取得
                 String selectedCategory = (String) item.getSelectedItem();
-
 
                 // 選択したアイテムの位置を取得
                 String categoryPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
@@ -85,9 +95,6 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
                 // ログで確認
                 Log.v("spinner item", selectedCategory);
                 Log.v("spinner position", categoryPosition);
-
-
-
 
                 /* ---------- START Loader（非同期処理）初期設定 ---------- */
                 // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
@@ -118,6 +125,10 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, final HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
 
         Log.v("API response", data.get("sentence"));
 
@@ -127,7 +138,7 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
             @Override
             public void run() {
                 HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                countData.put("quizLoop", 1);
+                countData.put("quizCount", 1);
                 countData.put("correctAnswer", 0);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

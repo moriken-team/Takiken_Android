@@ -36,15 +36,13 @@ public class CategoryQuizFragment extends Fragment {
             content.putString("wrong_answer1", quiz.get("wrong_answer1"));
             content.putString("wrong_answer2", quiz.get("wrong_answer2"));
             content.putString("wrong_answer3", quiz.get("wrong_answer3"));
-        } else {
-            Log.v("エラー", "問題形式エラー");
         }
 
         content.putString("sentence", quiz.get("sentence"));
         content.putString("right_answer", quiz.get("right_answer"));
         content.putString("type", quiz.get("type"));
         content.putString("category_id", quiz.get("category_id"));
-        content.putInt("quizLoop", countData.get("quizLoop"));
+        content.putInt("quizCount", countData.get("quizCount"));
         content.putInt("correctAnswer", countData.get("correctAnswer"));
 
         fragment.setArguments(content);
@@ -79,7 +77,7 @@ public class CategoryQuizFragment extends Fragment {
             Log.v("wrong_answer3-------", getArguments().getString("wrong_answer3"));
 
             TextView count = (TextView) view.findViewById(R.id.cq_count);
-            count.setText(getArguments().getInt("quizLoop") + "/5");
+            count.setText(getArguments().getInt("quizCount") + "/5");
 
             TextView sentence = (TextView) view.findViewById(R.id.cq_sentence);
             sentence.setText(getArguments().getString("sentence"));
@@ -148,7 +146,7 @@ public class CategoryQuizFragment extends Fragment {
                         resultData.put("category_id", getArguments().getString("category_id"));
 
                         HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                        countData.put("quizLoop", getArguments().getInt("quizLoop"));
+                        countData.put("quizCount", getArguments().getInt("quizCount"));
                         countData.put("correctAnswer", correctAnswer);
 
                         // CategoryQuizResultFragmentへ画面遷移
@@ -163,11 +161,13 @@ public class CategoryQuizFragment extends Fragment {
                     }
                 }
             });
-        } else if (getArguments().getString("type").equals("2")) {// 記述形式問題の場合
+        }
+
+        if (getArguments().getString("type").equals("2")) {// 記述形式問題の場合
             view = inflater.inflate(R.layout.fragment_category_quiz_type2, container, false);
 
             TextView count = (TextView) view.findViewById(R.id.cq_type2_count);
-            count.setText(getArguments().getInt("quizLoop") + "/5");
+            count.setText(getArguments().getInt("quizCount") + "/5");
 
             TextView sentence = (TextView) view.findViewById(R.id.cq_type2_sentence);
             sentence.setText(getArguments().getString("sentence"));
@@ -201,7 +201,7 @@ public class CategoryQuizFragment extends Fragment {
                     resultData.put("category_id", getArguments().getString("category_id"));
 
                     HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                    countData.put("quizLoop", getArguments().getInt("quizLoop"));
+                    countData.put("quizCount", getArguments().getInt("quizCount"));
                     countData.put("correctAnswer", correctAnswer);
 
                     // CategoryQuizResultFragmentへ画面遷移
@@ -212,8 +212,6 @@ public class CategoryQuizFragment extends Fragment {
                             .commit();
                 }
             });
-        } else {
-            Log.v("エラー", "問題形式エラー");
         }
 
         return view;

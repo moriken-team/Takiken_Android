@@ -29,7 +29,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         Bundle content = new Bundle();
         content.putString("answer", resultData.get("answer"));
         content.putString("category_id", resultData.get("category_id"));
-        content.putInt("quizLoop", countData.get("quizLoop"));
+        content.putInt("quizCount", countData.get("quizCount"));
         content.putInt("correctAnswer", countData.get("correctAnswer"));
         fragment.setArguments(content);
         return fragment;
@@ -55,7 +55,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
 //        Log.v("category_id-------", getArguments().getString("category_id"));
 
         TextView count = (TextView) view.findViewById(R.id.cqr_count);
-        count.setText(getArguments().getInt("quizLoop") + "/5");
+        count.setText(getArguments().getInt("quizCount") + "/5");
 
         TextView correct = (TextView) view.findViewById(R.id.cqr_correct);
         correct.setText(getArguments().getInt("correctAnswer") + "/5");
@@ -72,7 +72,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
             result.setText("✕ 不正解");
         }
 
-        if (getArguments().getInt("quizLoop") == 5) {
+        if (getArguments().getInt("quizCount") == 5) {
             Button finish = (Button) view.findViewById(R.id.cqr_button);
             finish.setText("終了");
         }
@@ -86,7 +86,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getArguments().getInt("quizLoop") < 5) {
+                if (getArguments().getInt("quizCount") < 5) {
                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                     Bundle receivedData = new Bundle();
@@ -134,7 +134,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
             @Override
             public void run() {
                 HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                countData.put("quizLoop", getArguments().getInt("quizLoop") + 1);
+                countData.put("quizCount", getArguments().getInt("quizCount") + 1);
                 countData.put("correctAnswer", getArguments().getInt("correctAnswer"));
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
