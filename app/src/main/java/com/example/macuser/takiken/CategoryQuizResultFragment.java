@@ -26,12 +26,12 @@ import java.util.HashMap;
 public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
     public static CategoryQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
         CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
-        Bundle content = new Bundle();
-        content.putString("answer", resultData.get("answer"));
-        content.putString("category_id", resultData.get("category_id"));
-        content.putInt("quizCount", countData.get("quizCount"));
-        content.putInt("correctAnswer", countData.get("correctAnswer"));
-        fragment.setArguments(content);
+        Bundle contents = new Bundle();
+        contents.putString("answer", resultData.get("answer"));
+        contents.putString("category_id", resultData.get("category_id"));
+        contents.putInt("quizCount", countData.get("quizCount"));
+        contents.putInt("correctAnswer", countData.get("correctAnswer"));
+        fragment.setArguments(contents);
         return fragment;
     }
 

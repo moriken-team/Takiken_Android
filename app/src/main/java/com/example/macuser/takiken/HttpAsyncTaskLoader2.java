@@ -53,47 +53,47 @@ public class HttpAsyncTaskLoader2 extends AsyncTaskLoader<ArrayList<HashMap>> {
 
         /**
          * id
-         * 1：緯度経度の取得（MapsFragment）
+         * 0：緯度経度の取得（MapsFragment）
          */
         switch (id) {
-            case 1:// 緯度経度の取得
+            case 0:// 緯度経度の取得
                 // URL指定
-                HttpClient client5 = new DefaultHttpClient();
+                HttpClient client0 = new DefaultHttpClient();
 
                 // パラメータの設定
-                ArrayList<NameValuePair> value5 = new ArrayList<NameValuePair>();
-                value5.add( new BasicNameValuePair("kentei_id", "6"));
+                ArrayList<NameValuePair> value0 = new ArrayList<NameValuePair>();
+                value0.add( new BasicNameValuePair("kentei_id", "6"));
 
-                String responseData5 = null;
+                String responseData0 = null;
 
                 ArrayList<HashMap> spots = new ArrayList<HashMap>();
 
                 try {
-                    String query5 = URLEncodedUtils.format(value5, "UTF-8");
-                    HttpGet get5 = new HttpGet("http://sakumon.jp/app/LK_API/spots/index.json" + "?" + query5);
+                    String query0 = URLEncodedUtils.format(value0, "UTF-8");
+                    HttpGet get0 = new HttpGet("http://sakumon.jp/app/LK_API/spots/index.json" + "?" + query0);
 
                     // リクエスト送信
-                    HttpResponse response = client5.execute(get5);
+                    HttpResponse response = client0.execute(get0);
                     // 取得
                     HttpEntity entity = response.getEntity();
-                    responseData5 = EntityUtils.toString(entity, "UTF-8");
+                    responseData0 = EntityUtils.toString(entity, "UTF-8");
 
-//                    jsonParceData5.put("name", responseData5);
+//                    jsonParceData0.put("name", responseData5);
 
                     // jsonパース
-                    JSONObject json5 = new JSONObject(responseData5);
+                    JSONObject json0 = new JSONObject(responseData0);
 
 
-                    for (int i = 0; i < json5.getJSONObject("response").getJSONArray("Spots").length(); i++) {// 登録スポット数繰り返す
+                    for (int i = 0; i < json0.getJSONObject("response").getJSONArray("Spots").length(); i++) {// 登録スポット数繰り返す
 
 
-                        HashMap<String, String> jsonParceData5 = new HashMap<String, String>();
+                        HashMap<String, String> jsonParceData0 = new HashMap<String, String>();
 
-                        jsonParceData5.put("name", json5.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("name"));
-                        jsonParceData5.put("latitude", json5.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("latitude"));
-                        jsonParceData5.put("longitude", json5.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("longitude"));
+                        jsonParceData0.put("name", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("name"));
+                        jsonParceData0.put("latitude", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("latitude"));
+                        jsonParceData0.put("longitude", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("longitude"));
 
-                        spots.add(jsonParceData5);
+                        spots.add(jsonParceData0);
 
 
 

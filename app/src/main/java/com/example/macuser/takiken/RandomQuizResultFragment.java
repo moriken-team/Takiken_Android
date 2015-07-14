@@ -27,12 +27,12 @@ import java.util.Random;
 public class RandomQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>>{
     public static RandomQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
         RandomQuizResultFragment fragment = new RandomQuizResultFragment();
-        Bundle content = new Bundle();
-        content.putString("answer", resultData.get("answer"));
-        content.putInt("quizCount", countData.get("quizCount"));
-        content.putInt("quizLoop", countData.get("quizLoop"));
-        content.putInt("correctAnswer", countData.get("correctAnswer"));
-        fragment.setArguments(content);
+        Bundle contents = new Bundle();
+        contents.putString("answer", resultData.get("answer"));
+        contents.putInt("quizCount", countData.get("quizCount"));
+        contents.putInt("quizLoop", countData.get("quizLoop"));
+        contents.putInt("correctAnswer", countData.get("correctAnswer"));
+        fragment.setArguments(contents);
         return fragment;
     }
 

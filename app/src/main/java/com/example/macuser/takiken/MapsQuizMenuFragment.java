@@ -16,10 +16,12 @@ import android.widget.TabHost;
  * create an instance of this fragment.
  */
 public class MapsQuizMenuFragment extends Fragment {
-    public static MapsQuizMenuFragment newInstance() {
+    public static MapsQuizMenuFragment newInstance(Double latitude, Double longitude) {
         MapsQuizMenuFragment fragment = new MapsQuizMenuFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+        Bundle contents = new Bundle();
+        contents.putDouble("latitude", latitude);
+        contents.putDouble("longitude", longitude);
+        fragment.setArguments(contents);
         return fragment;
     }
 
@@ -48,10 +50,11 @@ public class MapsQuizMenuFragment extends Fragment {
 
         TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
         tabSpec2.setIndicator("問題作成");
-        host.addTab(tabSpec2, QuestionsAndAnswersFragment.class, null);
+        Bundle positions = new Bundle();
+        positions.putDouble("latitude", getArguments().getDouble("latitude"));
+        positions.putDouble("longitude", getArguments().getDouble("longitude"));
+        host.addTab(tabSpec2, MapsMakingQandAFragment.class, positions);
 
         return view;
     }
-
-
 }

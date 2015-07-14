@@ -56,12 +56,13 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
         /**
          * id
-         * 0：一問一答の問題作成（QuestionsAndAnswersFragment）
-         * 1：選択問題の問題作成（MultipleChoiceFragment）
+         * 0：一問一答の問題作成（MakingQandAFragment）
+         * 1：選択問題の問題作成（MakingMultipleChoiceFragment）
          * 2：カテゴリ選択で問題解答（SelectCategoryFragment、CategoryQuizResultFragment）
-         * 3：ランダムで問題解答（SelectRandomFragment）
-         * 4：ログイン
-         * 5：ユーザ登録
+         * 3：ランダムで問題解答（SelectRandomFragment、RandomQuizResultFragment）
+         * 4：ログイン（）
+         * 5：ユーザ登録（UserAddActivity）
+         * 6：マップでの一問一答の問題作成（MapsMakingQandAFragment）
          */
         switch (id) {
             case 0:// 一問一答の問題作成
@@ -349,6 +350,56 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 returnData = jsonParceData5;
 
                 break;
+            case 6:// マップでの一問一答の問題作成
+                HttpClient client6 = new DefaultHttpClient();
+                HttpPost post6 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
+                // パラメータの設定
+                ArrayList<NameValuePair> value6 = new ArrayList<NameValuePair>();
+                value6.add( new BasicNameValuePair("kentei_id", "1"));
+                value6.add( new BasicNameValuePair("user_id", "1"));
+                value6.add( new BasicNameValuePair("type", "2"));
+                value6.add( new BasicNameValuePair("grade", "1"));
+                value6.add( new BasicNameValuePair("number", "1"));
+                value6.add( new BasicNameValuePair("sentence", requestData.get("question")));
+                value6.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
+                value6.add( new BasicNameValuePair("description", "012345"));
+                value6.add( new BasicNameValuePair("public_flag", "1"));
+                value6.add( new BasicNameValuePair("category_id", requestData.get("category")));
+                value6.add( new BasicNameValuePair("item", "1"));
+                value6.add( new BasicNameValuePair("latitude", requestData.get("latitude")));
+                value6.add( new BasicNameValuePair("longitude", requestData.get("longitude")));
+
+                String responseData6 = null;
+                HashMap<String, String> jsonParceData6 = new HashMap<String, String>();
+
+                try {
+                    post6.setEntity(new UrlEncodedFormEntity(value6, "UTF-8"));
+                    // リクエスト送信
+                    HttpResponse response = client6.execute(post6);
+                    // 取得
+                    HttpEntity entity = response.getEntity();
+                    responseData6 = EntityUtils.toString(entity, "UTF-8");
+
+                    /* ---------- START jsonパース ---------- */
+                    JSONObject json6 = new JSONObject(responseData6);
+
+                    if (json6.isNull("response")) {
+                        jsonParceData6.put("code", json6.getJSONObject("error").getString("code"));
+                        jsonParceData6.put("message", json6.getJSONObject("error").getString("message"));
+                    } else {
+                        jsonParceData6.put("code", json6.getJSONObject("response").getString("code"));
+                        jsonParceData6.put("message", json6.getJSONObject("response").getString("message"));
+                    }
+                    /* ---------- END jsonパース ---------- */
+                } catch(IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                returnData = jsonParceData6;
+
+                break;
         }
 
         return returnData;
@@ -403,6 +454,3 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
     }
 }
 /* ---------- END AsyncTaskLoader（非同期処理）ロード処理 ---------- */
-
-
-

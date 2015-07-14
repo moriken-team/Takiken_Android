@@ -1,11 +1,14 @@
 package com.example.macuser.takiken;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,33 +24,34 @@ import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MultipleChoiceFragment#newInstance} factory method to
+ * Use the {@link MakingQandAFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MultipleChoiceFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+public class MakingQandAFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
     // プログレスダイアログ用
     ProgressDialog progressDialog = null;
 
-    public static MultipleChoiceFragment newInstance() {
-        MultipleChoiceFragment fragment = new MultipleChoiceFragment();
+    public static MakingQandAFragment newInstance() {
+        MakingQandAFragment fragment = new MakingQandAFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MultipleChoiceFragment() {
+    public MakingQandAFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_multiple_choice, container, false);
+        final View view = inflater.inflate(R.layout.fragment_making_q_and_a, container, false);
 
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成
@@ -66,68 +70,72 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
         adapter.add("生涯学習");
         adapter.add("メディア");
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.mc_category);
+        Spinner spinner = (Spinner) view.findViewById(R.id.qaa_category);
         // SpinnerにAdapterを設定
         spinner.setAdapter(adapter);
         /* ---------- END ドロップダウンの表示設定 ---------- */
 
         //ボタンクリック：非同期処理により、入力した項目をPOSTで送信
-        Button decision = (Button) view.findViewById(R.id.mc_button);
+        Button decision = (Button) view.findViewById(R.id.qaa_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* ---------- START プログレスダイアログ ---------- */
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("now loading ...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.show();
-                /* ---------- END プログレスダイアログ ---------- */
+                /* ---------- START アラートダイアログ ---------- */
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("問題登録")
+                        .setMessage("問題を登録しても宜しいですか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /* ---------- START プログレスダイアログ ---------- */
+                                progressDialog = new ProgressDialog(getActivity());
+                                progressDialog.setMessage("now loading ...");
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.show();
+                                /* ---------- END プログレスダイアログ ---------- */
 
-                // レイアウトからSpinnerを取得
-                Spinner item = (Spinner) getActivity().findViewById(R.id.mc_category);
-                // 選択したアイテム取得
-                String selectedCategory = (String) item.getSelectedItem();
+                                // レイアウトからSpinnerを取得
+                                Spinner item = (Spinner) getActivity().findViewById(R.id.qaa_category);
+                                // 選択したアイテム取得
+                                String selectedCategory = (String) item.getSelectedItem();
 
-                // 選択したアイテムの位置を取得
-                String categoryPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
+                                // 選択したアイテムの位置を取得
+                                String categoryPosition = String.valueOf(item.getSelectedItemPosition());// 数値から文字列にキャスト変換
 
-                // ログで確認
-                Log.v("spinner item", selectedCategory);
-                Log.v("spinner position", categoryPosition);
+                                // ログで確認
+                                Log.v("spinner item", selectedCategory);
+                                Log.v("spinner position", categoryPosition);
 
-                EditText question = (EditText) getActivity().findViewById(R.id.mc_question);
-                EditText answer = (EditText) getActivity().findViewById(R.id.mc_answer);
-                EditText incorrect1 = (EditText) getActivity().findViewById(R.id.mc_incorrect1);
-                EditText incorrect2 = (EditText) getActivity().findViewById(R.id.mc_incorrect2);
-                EditText incorrect3 = (EditText) getActivity().findViewById(R.id.mc_incorrect3);
+                                EditText question = (EditText) getActivity().findViewById(R.id.qaa_question);
+                                EditText answer = (EditText) getActivity().findViewById(R.id.qaa_answer);
 
-                String inputtedQuestion = question.getText().toString();
-                String inputtedAnswer = answer.getText().toString();
-                String inputtedIncorrect1 = incorrect1.getText().toString();
-                String inputtedIncorrect2 = incorrect2.getText().toString();
-                String inputtedIncorrect3 = incorrect3.getText().toString();
+                                String inputtedQuestion = question.getText().toString();
+                                String inputtedAnswer = answer.getText().toString();
 
-                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                Bundle inputtedData = new Bundle();
-                inputtedData.putString("category", categoryPosition);
-                inputtedData.putString("question", inputtedQuestion);
-                inputtedData.putString("answer", inputtedAnswer);
-                inputtedData.putString("incorrect1", inputtedIncorrect1);
-                inputtedData.putString("incorrect2", inputtedIncorrect2);
-                inputtedData.putString("incorrect3", inputtedIncorrect3);
+                                /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                                Bundle inputtedData = new Bundle();
+                                inputtedData.putString("category", categoryPosition);
+                                inputtedData.putString("question", inputtedQuestion);
+                                inputtedData.putString("answer", inputtedAnswer);
 
-                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getLoaderManager().initLoader(LOADER_ID, inputtedData, MultipleChoiceFragment.this);
-                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                                getLoaderManager().initLoader(LOADER_ID, inputtedData, MakingQandAFragment.this);
+                                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                /* ---------- END アラートダイアログ ---------- */
             }
         });
 
         return view;
     }
 
+
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_ID = 0;
 
     @Override
     public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle inputtedData) {// 非同期処理を行うLoaderを生成する
@@ -136,9 +144,6 @@ public class MultipleChoiceFragment extends Fragment implements LoaderManager.Lo
         requestData.put("category", inputtedData.getString("category"));
         requestData.put("question", inputtedData.getString("question"));
         requestData.put("answer", inputtedData.getString("answer"));
-        requestData.put("incorrect1", inputtedData.getString("incorrect1"));
-        requestData.put("incorrect2", inputtedData.getString("incorrect2"));
-        requestData.put("incorrect3", inputtedData.getString("incorrect3"));
 
         return new HttpAsyncTaskLoader(getActivity(), requestData, id);
     }

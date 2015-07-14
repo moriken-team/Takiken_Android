@@ -1,7 +1,9 @@
 package com.example.macuser.takiken;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -34,35 +36,47 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* ---------- START プログレスダイアログ ---------- */
-                progressDialog = new ProgressDialog(UserAddActivity.this);
-                progressDialog.setMessage("now loading ...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.show();
-                /* ---------- END プログレスダイアログ ---------- */
+                /* ---------- START アラートダイアログ ---------- */
+                new AlertDialog.Builder(UserAddActivity.this)
+                        .setTitle("ユーザ登録")
+                        .setMessage("ユーザを登録しても宜しいですか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /* ---------- START プログレスダイアログ ---------- */
+                                progressDialog = new ProgressDialog(UserAddActivity.this);
+                                progressDialog.setMessage("now loading ...");
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.show();
+                                /* ---------- END プログレスダイアログ ---------- */
 
-                EditText username = (EditText) findViewById(R.id.add_username);
-                EditText email    = (EditText) findViewById(R.id.add_email);
-                EditText password = (EditText) findViewById(R.id.add_password);
+                                EditText username = (EditText) findViewById(R.id.add_username);
+                                EditText email    = (EditText) findViewById(R.id.add_email);
+                                EditText password = (EditText) findViewById(R.id.add_password);
 
-                Log.v("user", username.getText().toString());
-                Log.v("emai", email.getText().toString());
-                Log.v("pass", password.getText().toString());
+                                Log.v("user", username.getText().toString());
+                                Log.v("emai", email.getText().toString());
+                                Log.v("pass", password.getText().toString());
 
-                String inputtedUserName = username.getText().toString();
-                String inputtedEmail    = email.getText().toString();
-                String inputtedPassword = password.getText().toString();
+                                String inputtedUserName = username.getText().toString();
+                                String inputtedEmail    = email.getText().toString();
+                                String inputtedPassword = password.getText().toString();
 
-                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                Bundle inputtedData = new Bundle();
-                inputtedData.putString("username", inputtedUserName);
-                inputtedData.putString("email", inputtedEmail);
-                inputtedData.putString("password", inputtedPassword);
+                                /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                                Bundle inputtedData = new Bundle();
+                                inputtedData.putString("username", inputtedUserName);
+                                inputtedData.putString("email", inputtedEmail);
+                                inputtedData.putString("password", inputtedPassword);
 
-                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getSupportLoaderManager().initLoader(LOADER_ID, inputtedData, UserAddActivity.this);
-                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                                getSupportLoaderManager().initLoader(LOADER_ID, inputtedData, UserAddActivity.this);
+                                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                /* ---------- END アラートダイアログ ---------- */
             }
         });
     }
@@ -93,12 +107,12 @@ public class UserAddActivity extends FragmentActivity implements LoaderManager.L
         Log.v("API response", data.get("message"));
 
         if (data.get("code").equals("201")) {
-            Toast.makeText(this, "新規登録をしました。", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "ユーザを新規登録しました。", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(UserAddActivity.this, LoginActivity.class);// どのクラスを対象にするか
             startActivity(intent);// 画面遷移
         } else {
-            Toast.makeText(this, "未入力の項目があります。", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "未入力または不適切な形式での入力があります。", Toast.LENGTH_LONG).show();
         }
 
         // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）

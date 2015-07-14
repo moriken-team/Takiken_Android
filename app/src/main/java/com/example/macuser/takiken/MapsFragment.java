@@ -205,7 +205,7 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
 //                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //
 //                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, QuestionsAndAnswersFragment.newInstance())
+//                        .replace(R.id.container, MakingQandAFragment.newInstance())
 //                        .commit();
 //
 //                Toast.makeText(getActivity(), "マーカータップ", Toast.LENGTH_LONG).show();
@@ -213,22 +213,11 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
 //            }
 //        });
 
-        //吹き出しのクリックリスナー
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                // TODO Auto-generated method stub
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, MapsQuizMenuFragment.newInstance())
-                        .commit();
-            }
-        });
     }
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_ID = 0;
 
     @Override
     public Loader<ArrayList<HashMap>> onCreateLoader(int id, Bundle data) {// 非同期処理を行うLoaderを生成する
@@ -250,10 +239,10 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
 
         for (int i = 0; i < data.size(); i++) {// 登録スポット数繰り返す
             String str = ((HashMap<String, String>) data.get(i)).get("latitude");// キャスト変換
-            Double latitude = Double.valueOf(str);// 緯度
+            final Double latitude = Double.valueOf(str);// 緯度
 
             String str2 = ((HashMap<String, String>) data.get(i)).get("longitude");// キャスト変換
-            Double longitude = Double.valueOf(str2);// 経度
+            final Double longitude = Double.valueOf(str2);// 経度
 
             String spotName = ((HashMap<String, String>) data.get(i)).get("name");// スポット名
 
@@ -262,6 +251,25 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
             options.title(spotName);// マーカーの吹き出しの設定
             mMap.addMarker(options);// ピンの設置
         }
+
+        //吹き出しのクリックリスナー
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                System.out.println(marker.getPosition().latitude);// 緯度
+                System.out.println(marker.getPosition().longitude);// 経度
+
+                Double latitude = marker.getPosition().latitude;// 緯度
+                Double longitude = marker.getPosition().longitude;// 経度
+
+                // TODO Auto-generated method stub
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, MapsQuizMenuFragment.newInstance(latitude, longitude))
+                        .commit();
+            }
+        });
 
         // Loaderを停止・破棄（次回の読み込みでもう一度initLoaderをできるようにするため）
         getLoaderManager().destroyLoader(loader.getId());// loader.getId() == LOADER_ID（initLoaderの第一引数）

@@ -49,11 +49,11 @@ public class MakingQuizFragment extends Fragment {
 
         TabHost.TabSpec tabSpec1 = host.newTabSpec("tab1");
         tabSpec1.setIndicator("一問一答");
-        host.addTab(tabSpec1, QuestionsAndAnswersFragment.class, null);
+        host.addTab(tabSpec1, MakingQandAFragment.class, null);
 
         TabHost.TabSpec tabSpec2 = host.newTabSpec("tab2");
         tabSpec2.setIndicator("選択問題");
-        host.addTab(tabSpec2, MultipleChoiceFragment.class, null);
+        host.addTab(tabSpec2, MakingMultipleChoiceFragment.class, null);
 
         return view;
     }

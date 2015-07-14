@@ -27,23 +27,23 @@ import java.util.HashMap;
 public class RandomQuizFragment extends Fragment {
     public static RandomQuizFragment newInstance(HashMap<String, String> quiz, HashMap<String, Integer> countData) {
         RandomQuizFragment fragment = new RandomQuizFragment();
-        Bundle content = new Bundle();
+        Bundle contents = new Bundle();
 
         if (quiz.get("type").equals("1")) {
             Log.v("形式：四択問題", "誤答選択肢を追加");
 
-            content.putString("wrong_answer1", quiz.get("wrong_answer1"));
-            content.putString("wrong_answer2", quiz.get("wrong_answer2"));
-            content.putString("wrong_answer3", quiz.get("wrong_answer3"));
+            contents.putString("wrong_answer1", quiz.get("wrong_answer1"));
+            contents.putString("wrong_answer2", quiz.get("wrong_answer2"));
+            contents.putString("wrong_answer3", quiz.get("wrong_answer3"));
         }
 
-        content.putString("sentence", quiz.get("sentence"));
-        content.putString("right_answer", quiz.get("right_answer"));
-        content.putString("type", quiz.get("type"));
-        content.putInt("quizCount", countData.get("quizCount"));
-        content.putInt("quizLoop", countData.get("quizLoop"));
-        content.putInt("correctAnswer", countData.get("correctAnswer"));
-        fragment.setArguments(content);
+        contents.putString("sentence", quiz.get("sentence"));
+        contents.putString("right_answer", quiz.get("right_answer"));
+        contents.putString("type", quiz.get("type"));
+        contents.putInt("quizCount", countData.get("quizCount"));
+        contents.putInt("quizLoop", countData.get("quizLoop"));
+        contents.putInt("correctAnswer", countData.get("correctAnswer"));
+        fragment.setArguments(contents);
         return fragment;
     }
 
@@ -84,7 +84,6 @@ public class RandomQuizFragment extends Fragment {
             choices.add(getArguments().getString("right_answer"));
             choices.add(getArguments().getString("wrong_answer1"));
             choices.add(getArguments().getString("wrong_answer2"));
-            choices.add(getArguments().getString("wrong_answer3"));
             choices.add(getArguments().getString("wrong_answer3"));
 
             Collections.shuffle(choices);// 配列の中身をシャッフル
