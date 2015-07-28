@@ -56,6 +56,7 @@ public class MakingMultipleChoiceFragment extends Fragment implements LoaderMana
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapterにアイテムを追加
+        adapter.add("カテゴリを選択");
         adapter.add("滝沢のなりたち");
         adapter.add("自然");
         adapter.add("施設");
@@ -85,13 +86,6 @@ public class MakingMultipleChoiceFragment extends Fragment implements LoaderMana
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /* ---------- START プログレスダイアログ ---------- */
-                                progressDialog = new ProgressDialog(getActivity());
-                                progressDialog.setMessage("now loading ...");
-                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                progressDialog.show();
-                                /* ---------- END プログレスダイアログ ---------- */
-
                                 // レイアウトからSpinnerを取得
                                 Spinner item = (Spinner) getActivity().findViewById(R.id.mc_category);
                                 // 選択したアイテム取得
@@ -104,31 +98,42 @@ public class MakingMultipleChoiceFragment extends Fragment implements LoaderMana
                                 Log.v("spinner item", selectedCategory);
                                 Log.v("spinner position", categoryPosition);
 
-                                EditText question = (EditText) getActivity().findViewById(R.id.mc_question);
-                                EditText answer = (EditText) getActivity().findViewById(R.id.mc_answer);
-                                EditText incorrect1 = (EditText) getActivity().findViewById(R.id.mc_incorrect1);
-                                EditText incorrect2 = (EditText) getActivity().findViewById(R.id.mc_incorrect2);
-                                EditText incorrect3 = (EditText) getActivity().findViewById(R.id.mc_incorrect3);
+                                if (categoryPosition.equals("0")){
+                                    Toast.makeText(getActivity(), "カテゴリを選択して下さい。", Toast.LENGTH_LONG).show();
+                                } else {
+                                    /* ---------- START プログレスダイアログ ---------- */
+                                    progressDialog = new ProgressDialog(getActivity());
+                                    progressDialog.setMessage("now loading ...");
+                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progressDialog.show();
+                                    /* ---------- END プログレスダイアログ ---------- */
 
-                                String inputtedQuestion = question.getText().toString();
-                                String inputtedAnswer = answer.getText().toString();
-                                String inputtedIncorrect1 = incorrect1.getText().toString();
-                                String inputtedIncorrect2 = incorrect2.getText().toString();
-                                String inputtedIncorrect3 = incorrect3.getText().toString();
+                                    EditText question = (EditText) getActivity().findViewById(R.id.mc_question);
+                                    EditText answer = (EditText) getActivity().findViewById(R.id.mc_answer);
+                                    EditText incorrect1 = (EditText) getActivity().findViewById(R.id.mc_incorrect1);
+                                    EditText incorrect2 = (EditText) getActivity().findViewById(R.id.mc_incorrect2);
+                                    EditText incorrect3 = (EditText) getActivity().findViewById(R.id.mc_incorrect3);
 
-                                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                                Bundle inputtedData = new Bundle();
-                                inputtedData.putString("category", categoryPosition);
-                                inputtedData.putString("question", inputtedQuestion);
-                                inputtedData.putString("answer", inputtedAnswer);
-                                inputtedData.putString("incorrect1", inputtedIncorrect1);
-                                inputtedData.putString("incorrect2", inputtedIncorrect2);
-                                inputtedData.putString("incorrect3", inputtedIncorrect3);
+                                    String inputtedQuestion = question.getText().toString();
+                                    String inputtedAnswer = answer.getText().toString();
+                                    String inputtedIncorrect1 = incorrect1.getText().toString();
+                                    String inputtedIncorrect2 = incorrect2.getText().toString();
+                                    String inputtedIncorrect3 = incorrect3.getText().toString();
 
-                                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                                getLoaderManager().initLoader(LOADER_ID, inputtedData, MakingMultipleChoiceFragment.this);
-                                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                    /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                                    // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                                    Bundle inputtedData = new Bundle();
+                                    inputtedData.putString("category", categoryPosition);
+                                    inputtedData.putString("question", inputtedQuestion);
+                                    inputtedData.putString("answer", inputtedAnswer);
+                                    inputtedData.putString("incorrect1", inputtedIncorrect1);
+                                    inputtedData.putString("incorrect2", inputtedIncorrect2);
+                                    inputtedData.putString("incorrect3", inputtedIncorrect3);
+
+                                    // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                                    getLoaderManager().initLoader(LOADER_ID, inputtedData, MakingMultipleChoiceFragment.this);
+                                    /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                }
                             }
                         })
                         .setNegativeButton("Cancel", null)

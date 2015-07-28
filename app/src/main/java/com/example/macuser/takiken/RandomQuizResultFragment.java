@@ -67,7 +67,7 @@ public class RandomQuizResultFragment extends Fragment implements LoaderManager.
 
         if (getArguments().getString("answer") == "correct") {
             // テキストビューのテキストを設定
-            result.setText("正解!");
+            result.setText("正解！");
             ImageView maru = (ImageView) view.findViewById(R.id.rqr_maru_batu);
             maru.setImageResource(R.drawable.maru);
         } else {

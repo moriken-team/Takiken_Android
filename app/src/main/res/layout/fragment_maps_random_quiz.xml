@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.macuser.takiken.MapsRandomQuizFragment"
+    android:background="@drawable/blackboard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView android:id="@+id/map_rq_count"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="right"
+            android:padding="5dp"
+            android:textColor="#ffffffff" />
+
+        <TextView android:id="@+id/map_rq_sentence"
+            android:layout_width="330dp"
+            android:layout_height="230dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/book"
+            android:padding="40dp"
+            android:layout_marginBottom="20dp"
+            android:inputType="text|textMultiLine"
+            android:gravity="center_vertical" />
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:id="@+id/map_rq_button01"
+            android:background="@drawable/btn03"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:id="@+id/map_rq_button02"
+            android:background="@drawable/btn03"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:id="@+id/map_rq_button03"
+            android:background="@drawable/btn03"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:id="@+id/map_rq_button04"
+            android:background="@drawable/btn03"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

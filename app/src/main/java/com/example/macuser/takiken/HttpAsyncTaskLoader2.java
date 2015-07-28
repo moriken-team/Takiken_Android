@@ -89,6 +89,7 @@ public class HttpAsyncTaskLoader2 extends AsyncTaskLoader<ArrayList<HashMap>> {
 
                         HashMap<String, String> jsonParceData0 = new HashMap<String, String>();
 
+                        jsonParceData0.put("id", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("id"));
                         jsonParceData0.put("name", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("name"));
                         jsonParceData0.put("latitude", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("latitude"));
                         jsonParceData0.put("longitude", json0.getJSONObject("response").getJSONArray("Spots").getJSONObject(i).getJSONObject("Spot").getString("longitude"));

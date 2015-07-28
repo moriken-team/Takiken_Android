@@ -21,9 +21,10 @@
     <string name="btn1">btn1</string>
     <string name="btn2">btn2</string>
 
-    <!--ボタン-->
+    <!-- ボタン -->
     <string name="btn">決定</string>
     <string name="new_user_btn">新規登録</string>
+    <string name="start_btn">スタート</string>
 
     <!-- 問題 -->
     <string name="question_txt">問題文を入力して下さい。</string>
@@ -43,11 +44,13 @@
     <string name="logout">ログアウト</string>
     <string name="action_settings">Settings</string>
 
-    <!--ユーザ登録-->
+    <!-- ユーザ登録 -->
     <string name="title_activity_user_add">ユーザ登録</string>
     <string name="username_txt">ユーザ名</string>
     <string name="email_txt">メールアドレス</string>
     <string name="password_txt">パスワード</string>
 
+    <!-- 説明 -->
+    <string name="spot_quiz_start_txt">このスポットの問題を解けます！</string>
 
 </resources>

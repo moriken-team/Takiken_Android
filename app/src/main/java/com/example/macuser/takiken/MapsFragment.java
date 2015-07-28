@@ -258,6 +258,14 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
             public void onInfoWindowClick(Marker marker) {
                 System.out.println(marker.getPosition().latitude);// 緯度
                 System.out.println(marker.getPosition().longitude);// 経度
+                System.out.println(marker.getTitle());
+
+                String spotId = null;
+                for (int i = 0; i < data.size(); i++) {// 登録スポット数繰り返す
+                    if (((HashMap<String, String>) data.get(i)).get("name").equals(marker.getTitle())){// タイトルが一緒だったら
+                        spotId = ((HashMap<String, String>) data.get(i)).get("id");// スポットIdを取得
+                    }
+                }
 
                 Double latitude = marker.getPosition().latitude;// 緯度
                 Double longitude = marker.getPosition().longitude;// 経度
@@ -266,7 +274,7 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, MapsQuizMenuFragment.newInstance(latitude, longitude))
+                        .replace(R.id.container, MapsQuizMenuFragment.newInstance(latitude, longitude, spotId))
                         .commit();
             }
         });

@@ -30,11 +30,12 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
     // プログレスダイアログ用
     ProgressDialog progressDialog = null;
 
-    public static MapsMakingQandAFragment newInstance(Double latitude, Double longitude) {
+    public static MapsMakingQandAFragment newInstance(Double latitude, Double longitude, String spotId) {
         MapsMakingQandAFragment fragment = new MapsMakingQandAFragment();
         Bundle contents = new Bundle();
         contents.putDouble("latitude", latitude);
         contents.putDouble("longitude", longitude);
+        contents.putString("spotId", spotId);
         fragment.setArguments(contents);
         return fragment;
     }
@@ -63,6 +64,7 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapterにアイテムを追加
+        adapter.add("カテゴリを選択");
         adapter.add("滝沢のなりたち");
         adapter.add("自然");
         adapter.add("施設");
@@ -92,13 +94,6 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /* ---------- START プログレスダイアログ ---------- */
-                                progressDialog = new ProgressDialog(getActivity());
-                                progressDialog.setMessage("now loading ...");
-                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                progressDialog.show();
-                                /* ---------- END プログレスダイアログ ---------- */
-
                                 // レイアウトからSpinnerを取得
                                 Spinner item = (Spinner) getActivity().findViewById(R.id.map_qaa_category);
                                 // 選択したアイテム取得
@@ -111,24 +106,37 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
                                 Log.v("spinner item", selectedCategory);
                                 Log.v("spinner position", categoryPosition);
 
-                                EditText question = (EditText) getActivity().findViewById(R.id.map_qaa_question);
-                                EditText answer = (EditText) getActivity().findViewById(R.id.map_qaa_answer);
+                                if (categoryPosition.equals("0")){
+                                    Toast.makeText(getActivity(), "カテゴリを選択して下さい。", Toast.LENGTH_LONG).show();
+                                } else {
+                                    /* ---------- START プログレスダイアログ ---------- */
+                                    progressDialog = new ProgressDialog(getActivity());
+                                    progressDialog.setMessage("now loading ...");
+                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progressDialog.show();
+                                    /* ---------- END プログレスダイアログ ---------- */
 
-                                String inputtedQuestion = question.getText().toString();
-                                String inputtedAnswer = answer.getText().toString();
 
-                                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                                Bundle inputtedData = new Bundle();
-                                inputtedData.putString("category", categoryPosition);
-                                inputtedData.putString("question", inputtedQuestion);
-                                inputtedData.putString("answer", inputtedAnswer);
-                                inputtedData.putDouble("latitude", getArguments().getDouble("latitude"));
-                                inputtedData.putDouble("longitude", getArguments().getDouble("longitude"));
+                                    EditText question = (EditText) getActivity().findViewById(R.id.map_qaa_question);
+                                    EditText answer = (EditText) getActivity().findViewById(R.id.map_qaa_answer);
 
-                                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                                getLoaderManager().initLoader(LOADER_ID, inputtedData, MapsMakingQandAFragment.this);
-                                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                    String inputtedQuestion = question.getText().toString();
+                                    String inputtedAnswer = answer.getText().toString();
+
+                                    /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                                    // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                                    Bundle inputtedData = new Bundle();
+                                    inputtedData.putString("category", categoryPosition);
+                                    inputtedData.putString("question", inputtedQuestion);
+                                    inputtedData.putString("answer", inputtedAnswer);
+                                    inputtedData.putDouble("latitude", getArguments().getDouble("latitude"));
+                                    inputtedData.putDouble("longitude", getArguments().getDouble("longitude"));
+                                    inputtedData.putString("spotId", getArguments().getString("spotId"));
+
+                                    // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                                    getLoaderManager().initLoader(LOADER_ID, inputtedData, MapsMakingQandAFragment.this);
+                                    /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                                }
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -152,6 +160,7 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
         requestData.put("answer", inputtedData.getString("answer"));
         requestData.put("latitude", String.valueOf(inputtedData.getDouble("latitude")));
         requestData.put("longitude", String.valueOf(inputtedData.getDouble("longitude")));
+        requestData.put("spotId", inputtedData.getString("spotId"));
 
         Log.v("緯度", String.valueOf(inputtedData.getDouble("latitude")));
 

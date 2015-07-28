@@ -22,69 +22,61 @@ import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoryQuizResultFragment#newInstance} factory method to
+ * Use the {@link MapsRandomQuizResultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+public class MapsRandomQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
     // プログレスダイアログ用
     ProgressDialog progressDialog = null;
 
-    public static CategoryQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
-        CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
+    public static MapsRandomQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
+        MapsRandomQuizResultFragment fragment = new MapsRandomQuizResultFragment();
         Bundle contents = new Bundle();
         contents.putString("answer", resultData.get("answer"));
-        contents.putString("category_id", resultData.get("category_id"));
+        contents.putString("spotId", resultData.get("spotId"));
         contents.putInt("quizCount", countData.get("quizCount"));
         contents.putInt("correctAnswer", countData.get("correctAnswer"));
         fragment.setArguments(contents);
         return fragment;
     }
 
-    public CategoryQuizResultFragment() {
+    public MapsRandomQuizResultFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_category_quiz_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_maps_random_quiz_result, container, false);
 
-//        Log.v("selected-------", getArguments().getString("selected"));
-//        Log.v("answer-------", getArguments().getString("answer"));
-//        Log.v("category_id-------", getArguments().getString("category_id"));
-
-        TextView count = (TextView) view.findViewById(R.id.cqr_count);
+        TextView count = (TextView) view.findViewById(R.id.map_rqr_count);
         count.setText(getArguments().getInt("quizCount") + "/5");
 
-//        final TextView correct = (TextView) view.findViewById(R.id.cqr_correct);
-//        correct.setText(getArguments().getInt("correctAnswer") + "/5");
-
-
-
-        TextView result = (TextView) view.findViewById(R.id.cqr_result);
+        TextView result = (TextView) view.findViewById(R.id.map_rqr_result);
 
         if (getArguments().getString("answer") == "correct") {
             // テキストビューのテキストを設定
             result.setText("正解！");
-            ImageView maru = (ImageView) view.findViewById(R.id.cqr_maru_batu);
+            ImageView maru = (ImageView) view.findViewById(R.id.map_rqr_maru_batu);
             maru.setImageResource(R.drawable.maru);
         } else {
             // テキストビューのテキストを設定
             result.setText("不正解…");
-            ImageView batu = (ImageView) view.findViewById(R.id.cqr_maru_batu);
+            ImageView batu = (ImageView) view.findViewById(R.id.map_rqr_maru_batu);
             batu.setImageResource(R.drawable.batu);
         }
 
         String test = String.valueOf(getArguments().getInt("correctAnswer"));// 数値から文字列にキャスト変換
         Log.v("---正答数---", test);
 
-        Button decision = (Button) view.findViewById(R.id.cqr_button);
+        Button decision = (Button) view.findViewById(R.id.map_rqr_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,18 +91,18 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                     Bundle receivedData = new Bundle();
-                    receivedData.putString("category_id", getArguments().getString("category_id"));
+                    receivedData.putString("spotId", getArguments().getString("spotId"));
 
                     // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                    getLoaderManager().initLoader(LOADER_ID, receivedData, CategoryQuizResultFragment.this);
+                    getLoaderManager().initLoader(LOADER_ID, receivedData, MapsRandomQuizResultFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
                 } else {
-                      //SelectCategoryFragmentへ画面遷移
+                    //SelectCategoryFragmentへ画面遷移
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, QuizResultFragment.newInstance(getArguments().getInt("correctAnswer"), 5))
-                                    .commit();
+                            .replace(R.id.container, MapsQuizResultFragment.newInstance(getArguments().getInt("correctAnswer"), 5))
+                            .commit();
                 }
 
             }
@@ -120,13 +112,13 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
     }
 
     /* ---------- START LoaderCallback（非同期処理）コールバック処理 ---------- */
-    private static final int LOADER_ID = 2;
+    private static final int LOADER_ID = 7;
 
     @Override
     public Loader<HashMap<String, String>> onCreateLoader(int id, Bundle receivedData) {// 非同期処理を行うLoaderを生成する
         // 非同期処理に渡すデータを設定
         HashMap<String, String> requestData = new HashMap<String, String>();
-        requestData.put("category_id", receivedData.getString("category_id"));
+        requestData.put("spotId", receivedData.getString("spotId"));
 
         return new HttpAsyncTaskLoader(getActivity(), requestData, id);
     }
@@ -153,7 +145,7 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CategoryQuizFragment.newInstance(data, countData))
+                        .replace(R.id.container, MapsRandomQuizFragment.newInstance(data, countData))
                         .commit();
             }
         });
@@ -168,4 +160,5 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
 
     }
     /* ---------- END LoaderCallback（非同期処理）コールバック処理 ---------- */
+
 }
