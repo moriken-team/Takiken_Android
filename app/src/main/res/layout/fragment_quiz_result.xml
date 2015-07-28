@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.macuser.takiken.CategoryQuizResultFragment"
+    tools:context="com.example.macuser.takiken.QuizResultFragment"
     android:background="@drawable/blackboard">
 
     <LinearLayout
@@ -11,19 +11,14 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <TextView android:id="@+id/cqr_count"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="right"
-            android:padding="5dp"
-            android:textColor="#ffffffff" />
 
-        <!--<TextView android:id="@+id/cqr_correct"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="36dp"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:gravity="center" />-->
+
+
+
+
+
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +28,7 @@
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:id="@+id/cqr_docter"
+                android:id="@+id/qr_docter"
                 android:src="@drawable/docter"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -43,7 +38,7 @@
             <ImageView
                 android:layout_width="250dp"
                 android:layout_height="300dp"
-                android:id="@+id/cqr_fukidasi"
+                android:id="@+id/qr_fukidasi"
                 android:src="@drawable/fukidasi"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -61,31 +56,38 @@
                 android:layout_marginLeft="27dp"
                 android:layout_marginStart="27dp">
 
-                <TextView android:id="@+id/cqr_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center" />
-
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:id="@+id/cqr_maru_batu"
-                    android:layout_marginBottom="50dp"
+                    android:id="@+id/qr_kusudama"
+                    android:src="@drawable/kusudama"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginRight="23dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginEnd="33dp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_marginEnd="33dp" />
+
+                <TextView android:id="@+id/qr_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center"
+                    android:padding="5dp" />
 
             </LinearLayout>
 
         </RelativeLayout>
 
+
+
+
+
+
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nextBtn"
-            android:id="@+id/cqr_button"
+            android:text="@string/endBtn"
+            android:id="@+id/qr_button"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="34dp" />
 

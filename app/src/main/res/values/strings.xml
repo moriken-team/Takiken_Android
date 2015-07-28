@@ -25,14 +25,15 @@
     <string name="btn">決定</string>
     <string name="new_user_btn">新規登録</string>
 
-    <!-- 問題解答 -->
-    <string name="question_txt">問題文</string>
-    <string name="answer_txt">解答</string>
+    <!-- 問題 -->
+    <string name="question_txt">問題文を入力して下さい。</string>
+    <string name="answer_txt">解答を入力して下さい。</string>
     <string name="nextBtn">次へ</string>
-    <string name="incorrect1_txt">不正解1</string>
-    <string name="incorrect2_txt">不正解2</string>
-    <string name="incorrect3_txt">不正解3</string>
-    <string name="incorrect4_txt">不正解4</string>
+    <string name="endBtn">終了</string>
+    <string name="incorrect1_txt">1つめの不正解を入力して下さい。</string>
+    <string name="incorrect2_txt">2つめの不正解を入力して下さい。</string>
+    <string name="incorrect3_txt">3つめの不正解を入力して下さい。</string>
+    <string name="incorrect4_txt">4つめの不正解を入力して下さい。</string>
 
     <!-- ログイン -->
     <string name="title_activity_login">ログイン</string>

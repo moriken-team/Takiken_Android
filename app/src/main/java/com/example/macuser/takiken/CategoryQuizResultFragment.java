@@ -1,6 +1,7 @@
 package com.example.macuser.takiken;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -24,6 +26,9 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class CategoryQuizResultFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, String>> {
+    // プログレスダイアログ用
+    ProgressDialog progressDialog = null;
+
     public static CategoryQuizResultFragment newInstance(HashMap<String, String> resultData, HashMap<String, Integer> countData) {
         CategoryQuizResultFragment fragment = new CategoryQuizResultFragment();
         Bundle contents = new Bundle();
@@ -57,8 +62,8 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
         TextView count = (TextView) view.findViewById(R.id.cqr_count);
         count.setText(getArguments().getInt("quizCount") + "/5");
 
-        TextView correct = (TextView) view.findViewById(R.id.cqr_correct);
-        correct.setText(getArguments().getInt("correctAnswer") + "/5");
+//        final TextView correct = (TextView) view.findViewById(R.id.cqr_correct);
+//        correct.setText(getArguments().getInt("correctAnswer") + "/5");
 
 
 
@@ -66,27 +71,31 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
 
         if (getArguments().getString("answer") == "correct") {
             // テキストビューのテキストを設定
-            result.setText("◯ 正解");
+            result.setText("正解!");
+            ImageView maru = (ImageView) view.findViewById(R.id.cqr_maru_batu);
+            maru.setImageResource(R.drawable.maru);
         } else {
             // テキストビューのテキストを設定
-            result.setText("✕ 不正解");
+            result.setText("不正解…");
+            ImageView batu = (ImageView) view.findViewById(R.id.cqr_maru_batu);
+            batu.setImageResource(R.drawable.batu);
         }
-
-        if (getArguments().getInt("quizCount") == 5) {
-            Button finish = (Button) view.findViewById(R.id.cqr_button);
-            finish.setText("終了");
-        }
-
 
         String test = String.valueOf(getArguments().getInt("correctAnswer"));// 数値から文字列にキャスト変換
         Log.v("---正答数---", test);
-
 
         Button decision = (Button) view.findViewById(R.id.cqr_button);
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getArguments().getInt("quizCount") < 5) {
+                    /* ---------- START プログレスダイアログ ---------- */
+                    progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setMessage("now loading ...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
+                    /* ---------- END プログレスダイアログ ---------- */
+
                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                     Bundle receivedData = new Bundle();
@@ -96,12 +105,12 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
                     getLoaderManager().initLoader(LOADER_ID, receivedData, CategoryQuizResultFragment.this);
                 /* ---------- END Loader（非同期処理）初期設定 ---------- */
                 } else {
-                    // SelectCategoryFragmentへ画面遷移
+                      //SelectCategoryFragmentへ画面遷移
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, QuizAnswerFragment.newInstance(3))
-                            .commit();
+                            .replace(R.id.container, QuizResultFragment.newInstance(getArguments().getInt("correctAnswer"), 5))
+                                    .commit();
                 }
 
             }
@@ -125,6 +134,10 @@ public class CategoryQuizResultFragment extends Fragment implements LoaderManage
     @Override
     public void onLoadFinished(Loader<HashMap<String, String>> loader, final HashMap<String, String> data) {// 非同期処理完了時
         // ここでView等にデータをセット
+        if (progressDialog != null) {
+            progressDialog.dismiss();// プログレスダイアログを終了
+            progressDialog = null;
+        }
 
         Log.v("API response", data.get("sentence"));
 

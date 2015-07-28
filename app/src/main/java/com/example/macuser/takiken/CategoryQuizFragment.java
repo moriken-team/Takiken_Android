@@ -93,71 +93,180 @@ public class CategoryQuizFragment extends Fragment {
             Collections.shuffle(choices);// 配列の中身をシャッフル
             /* ---------- END 選択肢をシャッフル ---------- */
 
-            // ラジオボタンのテキストを設定
-            RadioButton radio1 = (RadioButton) view.findViewById(R.id.cq_radioButton1);
-            radio1.setText(choices.get(0));
+            // ボタンのテキストを設定
+            final Button button01 = (Button) view.findViewById(R.id.cq_button01);
+            button01.setText(choices.get(0));
 
-            RadioButton radio2 = (RadioButton) view.findViewById(R.id.cq_radioButton2);
-            radio2.setText(choices.get(1));
+            final Button button02 = (Button) view.findViewById(R.id.cq_button02);
+            button02.setText(choices.get(1));
 
-            RadioButton radio3 = (RadioButton) view.findViewById(R.id.cq_radioButton3);
-            radio3.setText(choices.get(2));
+            final Button button03 = (Button) view.findViewById(R.id.cq_button03);
+            button03.setText(choices.get(2));
 
-            RadioButton radio4 = (RadioButton) view.findViewById(R.id.cq_radioButton4);
-            radio4.setText(choices.get(3));
+            final Button button04 = (Button) view.findViewById(R.id.cq_button04);
+            button04.setText(choices.get(3));
 
-            final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.cq_radioGroup);
-
-            Button decision = (Button) view.findViewById(R.id.cq_button);
-            decision.setOnClickListener(new View.OnClickListener() {
+            button01.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final int notSelected = -1;
-                    int checkedId = radioGroup.getCheckedRadioButtonId();
+                    // タンのテキストを取得
+                    String text = button01.getText().toString();
 
-                    if (checkedId != notSelected) {
-                        // 選択されているラジオボタンの取得
-                        RadioButton radioButton = (RadioButton) getActivity().findViewById(checkedId);
+                    Log.v("check", text);
 
-                        // ラジオボタンのテキストを取得
-                        String text = radioButton.getText().toString();
+                    int correctAnswer = 0;// 正答数
+                    String answer = null;// 正答かどうかのフラグ
+                    // 正答の判定
+                    if (getArguments().getString("right_answer").equals(text)) {
+                        answer = "correct";
 
-                        Log.v("check", text);
+                        Log.v("correct", "正解");
 
-                        int correctAnswer = 0;// 正答数
-                        String answer = null;// 正答かどうかのフラグ
-                        // 正答の判定
-                        if (getArguments().getString("right_answer").equals(text)) {
-                            answer = "correct";
-
-                            Log.v("correct", "正解");
-
-                            correctAnswer = getArguments().getInt("correctAnswer") + 1;
-                        } else {
-                            answer = "incorrect";
-
-                            Log.v("incorrect", "不正解");
-                            correctAnswer = getArguments().getInt("correctAnswer");
-                        }
-
-                        HashMap<String, String> resultData = new HashMap<String, String>();
-                        resultData.put("answer", answer);
-                        resultData.put("category_id", getArguments().getString("category_id"));
-
-                        HashMap<String, Integer> countData = new HashMap<String, Integer>();
-                        countData.put("quizCount", getArguments().getInt("quizCount"));
-                        countData.put("correctAnswer", correctAnswer);
-
-                        // CategoryQuizResultFragmentへ画面遷移
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
-                                .commit();
-
+                        correctAnswer = getArguments().getInt("correctAnswer") + 1;
                     } else {
-                        Log.v("check", "選択されていません");
+                        answer = "incorrect";
+
+                        Log.v("incorrect", "不正解");
+                        correctAnswer = getArguments().getInt("correctAnswer");
                     }
+
+                    HashMap<String, String> resultData = new HashMap<String, String>();
+                    resultData.put("answer", answer);
+                    resultData.put("category_id", getArguments().getString("category_id"));
+
+                    HashMap<String, Integer> countData = new HashMap<String, Integer>();
+                    countData.put("quizCount", getArguments().getInt("quizCount"));
+                    countData.put("correctAnswer", correctAnswer);
+
+                    // CategoryQuizResultFragmentへ画面遷移
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
+                            .commit();
+                }
+            });
+
+            button02.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // タンのテキストを取得
+                    String text = button02.getText().toString();
+
+                    Log.v("check", text);
+
+                    int correctAnswer = 0;// 正答数
+                    String answer = null;// 正答かどうかのフラグ
+                    // 正答の判定
+                    if (getArguments().getString("right_answer").equals(text)) {
+                        answer = "correct";
+
+                        Log.v("correct", "正解");
+
+                        correctAnswer = getArguments().getInt("correctAnswer") + 1;
+                    } else {
+                        answer = "incorrect";
+
+                        Log.v("incorrect", "不正解");
+                        correctAnswer = getArguments().getInt("correctAnswer");
+                    }
+
+                    HashMap<String, String> resultData = new HashMap<String, String>();
+                    resultData.put("answer", answer);
+                    resultData.put("category_id", getArguments().getString("category_id"));
+
+                    HashMap<String, Integer> countData = new HashMap<String, Integer>();
+                    countData.put("quizCount", getArguments().getInt("quizCount"));
+                    countData.put("correctAnswer", correctAnswer);
+
+                    // CategoryQuizResultFragmentへ画面遷移
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
+                            .commit();
+                }
+            });
+
+            button03.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // タンのテキストを取得
+                    String text = button03.getText().toString();
+
+                    Log.v("check", text);
+
+                    int correctAnswer = 0;// 正答数
+                    String answer = null;// 正答かどうかのフラグ
+                    // 正答の判定
+                    if (getArguments().getString("right_answer").equals(text)) {
+                        answer = "correct";
+
+                        Log.v("correct", "正解");
+
+                        correctAnswer = getArguments().getInt("correctAnswer") + 1;
+                    } else {
+                        answer = "incorrect";
+
+                        Log.v("incorrect", "不正解");
+                        correctAnswer = getArguments().getInt("correctAnswer");
+                    }
+
+                    HashMap<String, String> resultData = new HashMap<String, String>();
+                    resultData.put("answer", answer);
+                    resultData.put("category_id", getArguments().getString("category_id"));
+
+                    HashMap<String, Integer> countData = new HashMap<String, Integer>();
+                    countData.put("quizCount", getArguments().getInt("quizCount"));
+                    countData.put("correctAnswer", correctAnswer);
+
+                    // CategoryQuizResultFragmentへ画面遷移
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
+                            .commit();
+                }
+            });
+
+            button04.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // タンのテキストを取得
+                    String text = button04.getText().toString();
+
+                    Log.v("check", text);
+
+                    int correctAnswer = 0;// 正答数
+                    String answer = null;// 正答かどうかのフラグ
+                    // 正答の判定
+                    if (getArguments().getString("right_answer").equals(text)) {
+                        answer = "correct";
+
+                        Log.v("correct", "正解");
+
+                        correctAnswer = getArguments().getInt("correctAnswer") + 1;
+                    } else {
+                        answer = "incorrect";
+
+                        Log.v("incorrect", "不正解");
+                        correctAnswer = getArguments().getInt("correctAnswer");
+                    }
+
+                    HashMap<String, String> resultData = new HashMap<String, String>();
+                    resultData.put("answer", answer);
+                    resultData.put("category_id", getArguments().getString("category_id"));
+
+                    HashMap<String, Integer> countData = new HashMap<String, Integer>();
+                    countData.put("quizCount", getArguments().getInt("quizCount"));
+                    countData.put("correctAnswer", correctAnswer);
+
+                    // CategoryQuizResultFragmentへ画面遷移
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, CategoryQuizResultFragment.newInstance(resultData, countData))
+                            .commit();
                 }
             });
         }

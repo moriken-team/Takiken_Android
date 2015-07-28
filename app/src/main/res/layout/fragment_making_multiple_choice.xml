@@ -17,64 +17,71 @@
             android:weightSum="1">
 
             <Spinner
-                android:layout_width="285dp"
+                android:layout_width="300dp"
                 android:layout_height="120dp"
                 android:id="@+id/mc_category"
                 android:layout_gravity="center_horizontal"
-                android:background="@color/wallet_holo_blue_light"
+                android:background="@drawable/bunbougu_fusen"
                 android:spinnerMode="dialog"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="70dp"
+                android:paddingTop="30dp" />
 
             <EditText
-                android:layout_width="285dp"
-                android:layout_height="314dp"
+                android:layout_width="340dp"
+                android:layout_height="320dp"
                 android:id="@+id/mc_question"
                 android:layout_gravity="center_horizontal|top"
                 android:hint="@string/question_txt"
                 android:inputType="text|textMultiLine"
-                android:background="@color/abc_search_url_text_normal"
-                android:layout_marginBottom="20dp" />
+                android:background="@drawable/book"
+                android:layout_marginBottom="10dp"
+                android:padding="40dp" />
 
             <EditText
-                android:layout_width="285dp"
-                android:layout_height="50dp"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
                 android:id="@+id/mc_answer"
                 android:hint="@string/answer_txt"
-                android:inputType="text|textMultiLine"
-                android:background="@color/button_material_light"
+                android:inputType="text"
+                android:background="@drawable/btn_red"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="35dp" />
 
             <EditText
-                android:layout_width="285dp"
-                android:layout_height="50dp"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
                 android:id="@+id/mc_incorrect1"
                 android:hint="@string/incorrect1_txt"
-                android:inputType="text|textMultiLine"
-                android:background="@color/button_material_light"
+                android:inputType="text"
+                android:background="@drawable/btn_green"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="35dp" />
 
             <EditText
-                android:layout_width="285dp"
-                android:layout_height="50dp"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
                 android:id="@+id/mc_incorrect2"
                 android:hint="@string/incorrect2_txt"
-                android:inputType="text|textMultiLine"
-                android:background="@color/button_material_light"
+                android:inputType="text"
+                android:background="@drawable/btn_green"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="35dp" />
 
             <EditText
-                android:layout_width="285dp"
-                android:layout_height="50dp"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
                 android:id="@+id/mc_incorrect3"
                 android:hint="@string/incorrect3_txt"
-                android:inputType="text|textMultiLine"
-                android:background="@color/button_material_light"
+                android:inputType="text"
+                android:background="@drawable/btn_green"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                android:paddingLeft="35dp" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -82,7 +89,8 @@
                 android:text="@string/btn"
                 android:id="@+id/mc_button"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="34dp" />
+                android:layout_marginBottom="34dp"
+                android:background="@drawable/btn08" />
 
         </LinearLayout>
     </ScrollView>

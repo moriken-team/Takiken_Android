@@ -71,7 +71,7 @@ public class MapsMakingQandAFragment extends Fragment implements LoaderManager.L
         adapter.add("交通");
         adapter.add("人物");
         adapter.add("イベント");
-        adapter.add("農作物・特産物");
+        adapter.add("産業");
         adapter.add("生涯学習");
         adapter.add("メディア");
 

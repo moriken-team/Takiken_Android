@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -56,6 +57,7 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapterにアイテムを追加
+        adapter.add("カテゴリを選択");
         adapter.add("滝沢のなりたち");
         adapter.add("自然");
         adapter.add("施設");
@@ -64,7 +66,7 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         adapter.add("交通");
         adapter.add("人物");
         adapter.add("イベント");
-        adapter.add("農作物・特産物");
+        adapter.add("産業");
         adapter.add("生涯学習");
         adapter.add("メディア");
 
@@ -77,13 +79,6 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
         decision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* ---------- START プログレスダイアログ ---------- */
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("now loading ...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.show();
-                /* ---------- END プログレスダイアログ ---------- */
-
                 // レイアウトからSpinnerを取得
                 Spinner item = (Spinner) getActivity().findViewById(R.id.sc_category);
                 // 選択したアイテム取得
@@ -96,14 +91,25 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
                 Log.v("spinner item", selectedCategory);
                 Log.v("spinner position", categoryPosition);
 
-                /* ---------- START Loader（非同期処理）初期設定 ---------- */
-                // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
-                Bundle inputtedData = new Bundle();
-                inputtedData.putString("category_id", categoryPosition);
+                if (categoryPosition.equals("0")){
+                    Toast.makeText(getActivity(), "カテゴリを選択して下さい。", Toast.LENGTH_LONG).show();
+                } else {
+                    /* ---------- START プログレスダイアログ ---------- */
+                    progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setMessage("now loading ...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
+                    /* ---------- END プログレスダイアログ ---------- */
 
-                // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
-                getLoaderManager().initLoader(LOADER_ID, inputtedData, SelectCategoryFragment.this);
-                /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                    /* ---------- START Loader（非同期処理）初期設定 ---------- */
+                    // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
+                    Bundle inputtedData = new Bundle();
+                    inputtedData.putString("category_id", categoryPosition);
+
+                    // Loader（HttpHttpAsyncTaskLoaderクラス）の初期化と開始
+                    getLoaderManager().initLoader(LOADER_ID, inputtedData, SelectCategoryFragment.this);
+                    /* ---------- END Loader（非同期処理）初期設定 ---------- */
+                }
             }
         });
 

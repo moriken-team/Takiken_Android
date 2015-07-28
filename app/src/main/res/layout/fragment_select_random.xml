@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.macuser.takiken.SelectRandomFragment">
+    tools:context="com.example.macuser.takiken.SelectRandomFragment"
+    android:background="@drawable/blackboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,14 +13,16 @@
         android:weightSum="1">
 
         <Spinner
-            android:layout_width="285dp"
+            android:layout_width="300dp"
             android:layout_height="120dp"
             android:id="@+id/sr_count"
             android:layout_gravity="center_horizontal"
-            android:background="@color/wallet_holo_blue_light"
+            android:background="@drawable/bunbougu_fusen"
             android:spinnerMode="dialog"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="30dp"
+            android:paddingLeft="70dp" />
 
         <Button
             android:layout_width="wrap_content"

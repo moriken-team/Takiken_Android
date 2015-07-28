@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.macuser.takiken.RandomQuizResultFragment">
+    tools:context="com.example.macuser.takiken.RandomQuizResultFragment"
+    android:background="@drawable/blackboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,22 +14,73 @@
 
         <TextView android:id="@+id/rqr_count"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="25dp"
             android:layout_gravity="center_horizontal"
             android:gravity="right"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:textColor="#ffffffff" />
 
-        <TextView android:id="@+id/rqr_result"
-            android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center" />
+        <!--<TextView android:id="@+id/rqr_correct"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="124dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:gravity="center" />-->
 
-        <TextView android:id="@+id/rqr_correct"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center" />
+            android:layout_height="350dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/rqr_docter"
+                android:src="@drawable/docter"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp" />
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="300dp"
+                android:id="@+id/rqr_fukidasi"
+                android:src="@drawable/fukidasi"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:layout_marginBottom="33dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="27dp"
+                android:layout_marginStart="27dp">
+
+                <TextView android:id="@+id/rqr_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/rqr_maru_batu"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginRight="23dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginEnd="33dp"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <Button
             android:layout_width="wrap_content"
