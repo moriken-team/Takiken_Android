@@ -36,9 +36,7 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
+        /* ログイン機能（API未完成のためコメントアウト）
         // SharedPreferences取得
         SharedPreferences pref = getSharedPreferences("user_data", Context.MODE_PRIVATE);
         // 設定値の取得
@@ -48,13 +46,11 @@ public class MainActivity extends ActionBarActivity
 
         Log.v("ログインチェック", username);
 
-        if (!username.equals("おお")) {
+        if (!username.equals("name")) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);// どのクラスを対象にするか
             startActivity(intent);// 画面遷移
         }
-
-
-
+        */
 
         setContentView(R.layout.activity_main);
 
