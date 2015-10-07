@@ -171,11 +171,11 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 // パラメータの設定
                 ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
-                value2.add( new BasicNameValuePair("kentei_id", "6"));
-                value2.add( new BasicNameValuePair("employ", "0"));
-                value2.add( new BasicNameValuePair("public_flag", "1"));
+                value2.add( new BasicNameValuePair("kentei_id", "4"));
+                value2.add( new BasicNameValuePair("employ", "2013"));
+                value2.add( new BasicNameValuePair("public_flag", "0"));
 //                value2.add( new BasicNameValuePair("grade", "0"));
-                value2.add( new BasicNameValuePair("category_id", "1"));
+                value2.add( new BasicNameValuePair("category_id", requestData.get("category_id")));
                 value2.add( new BasicNameValuePair("item", "1"));
 
                 String responseData2 = null;
@@ -224,9 +224,9 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 // パラメータの設定
                 ArrayList<NameValuePair> value3 = new ArrayList<NameValuePair>();
-                value3.add( new BasicNameValuePair("kentei_id", "6"));
-                value3.add( new BasicNameValuePair("employ", "0"));
-                value3.add( new BasicNameValuePair("public_flag", "1"));
+                value3.add( new BasicNameValuePair("kentei_id", "4"));
+                value3.add( new BasicNameValuePair("employ", "2013"));
+                value3.add( new BasicNameValuePair("public_flag", "0"));
 //                value3.add( new BasicNameValuePair("grade", "0"));
 //                value3.add( new BasicNameValuePair("category_id", "1"));
                 value3.add( new BasicNameValuePair("item", "1"));
