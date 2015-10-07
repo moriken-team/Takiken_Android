@@ -63,6 +63,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
          * 4：ログイン（）
          * 5：ユーザ登録（UserAddActivity）
          * 6：マップでの一問一答の問題作成（MapsMakingQandAFragment）
+         * 7: スポット毎の問題解答（MapsQuizAnswerMenuFragment、MapsRandomQuizResultFragment）
          */
         switch (id) {
             case 0:// 一問一答の問題作成

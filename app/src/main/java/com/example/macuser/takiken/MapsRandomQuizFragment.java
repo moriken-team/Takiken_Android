@@ -88,7 +88,7 @@ public class MapsRandomQuizFragment extends Fragment {
             sentence.setText(getArguments().getString("sentence"));
 
             /* ---------- START 選択肢をシャッフル ---------- */
-            //配列の中身をシャッフルするためにリスト形式に変更
+            // 配列の中身をシャッフルするためにリスト形式に変更
             ArrayList<String> choices = new ArrayList<String>();
             choices.add(getArguments().getString("right_answer"));
             choices.add(getArguments().getString("wrong_answer1"));
@@ -114,7 +114,7 @@ public class MapsRandomQuizFragment extends Fragment {
             button01.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // タンのテキストを取得
+                    // ボタンのテキストを取得
                     String text = button01.getText().toString();
 
                     Log.v("check", text);
@@ -155,7 +155,7 @@ public class MapsRandomQuizFragment extends Fragment {
             button02.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // タンのテキストを取得
+                    // ボタンのテキストを取得
                     String text = button02.getText().toString();
 
                     Log.v("check", text);
@@ -196,7 +196,7 @@ public class MapsRandomQuizFragment extends Fragment {
             button03.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // タンのテキストを取得
+                    // ボタンのテキストを取得
                     String text = button03.getText().toString();
 
                     Log.v("check", text);
@@ -237,7 +237,7 @@ public class MapsRandomQuizFragment extends Fragment {
             button04.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // タンのテキストを取得
+                    // ボタンのテキストを取得
                     String text = button04.getText().toString();
 
                     Log.v("check", text);
