@@ -59,15 +59,15 @@ public class MakingQandAFragment extends Fragment implements LoaderManager.Loade
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapterにアイテムを追加
         adapter.add("カテゴリを選択");
-        adapter.add("滝沢のなりたち");
+        adapter.add("滝沢のなりたち・概要");
         adapter.add("自然");
-        adapter.add("施設");
         adapter.add("神社・仏閣");
-        adapter.add("伝統・文化");
-        adapter.add("交通");
+        adapter.add("伝統・文化財");
         adapter.add("人物");
-        adapter.add("イベント");
+        adapter.add("施設");
+        adapter.add("都市整備");
         adapter.add("産業");
+        adapter.add("イベント");
         adapter.add("生涯学習");
         adapter.add("メディア");
 
@@ -100,6 +100,43 @@ public class MakingQandAFragment extends Fragment implements LoaderManager.Loade
                                 Log.v("spinner item", selectedCategory);
                                 Log.v("spinner position", categoryPosition);
 
+                                String categoryId = null;
+                                switch (item.getSelectedItemPosition()) {// dbに登録してあるカテゴリidと対応
+                                    case 1:
+                                        categoryId = "15";
+                                        break;
+                                    case 2:
+                                        categoryId = "16";
+                                        break;
+                                    case 3:
+                                        categoryId = "17";
+                                        break;
+                                    case 4:
+                                        categoryId = "18";
+                                        break;
+                                    case 5:
+                                        categoryId = "19";
+                                        break;
+                                    case 6:
+                                        categoryId = "20";
+                                        break;
+                                    case 7:
+                                        categoryId = "21";
+                                        break;
+                                    case 8:
+                                        categoryId = "22";
+                                        break;
+                                    case 9:
+                                        categoryId = "23";
+                                        break;
+                                    case 10:
+                                        categoryId = "24";
+                                        break;
+                                    case 11:
+                                        categoryId = "25";
+                                        break;
+                                }
+
                                 if (categoryPosition.equals("0")){
                                     Toast.makeText(getActivity(), "カテゴリを選択して下さい。", Toast.LENGTH_LONG).show();
                                 } else {
@@ -119,7 +156,7 @@ public class MakingQandAFragment extends Fragment implements LoaderManager.Loade
                                     /* ---------- START Loader（非同期処理）初期設定 ---------- */
                                     // Loader（HttpHttpAsyncTaskLoaderクラス）に渡す引数を設定
                                     Bundle inputtedData = new Bundle();
-                                    inputtedData.putString("category", categoryPosition);
+                                    inputtedData.putString("category", categoryId);
                                     inputtedData.putString("question", inputtedQuestion);
                                     inputtedData.putString("answer", inputtedAnswer);
 

@@ -70,14 +70,14 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 HttpPost post0 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
                 // パラメータの設定
                 ArrayList<NameValuePair> value0 = new ArrayList<NameValuePair>();
-                value0.add( new BasicNameValuePair("kentei_id", "6"));
+                value0.add( new BasicNameValuePair("kentei_id", "4"));
                 value0.add( new BasicNameValuePair("user_id", "1"));
                 value0.add( new BasicNameValuePair("type", "2"));
-                value0.add( new BasicNameValuePair("grade", "1"));
+                value0.add( new BasicNameValuePair("grade", "0"));
                 value0.add( new BasicNameValuePair("number", "1"));
                 value0.add( new BasicNameValuePair("sentence", requestData.get("question")));
                 value0.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
-                value0.add( new BasicNameValuePair("description", "012345"));
+                value0.add( new BasicNameValuePair("description", "NotDescription"));
                 value0.add( new BasicNameValuePair("public_flag", "1"));
                 value0.add( new BasicNameValuePair("category_id", requestData.get("category")));
                 value0.add( new BasicNameValuePair("item", "1"));
@@ -118,17 +118,17 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 HttpPost post1 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
                 // パラメータの設定
                 ArrayList<NameValuePair> value1 = new ArrayList<NameValuePair>();
-                value1.add( new BasicNameValuePair("kentei_id", "6"));
+                value1.add( new BasicNameValuePair("kentei_id", "4"));
                 value1.add( new BasicNameValuePair("user_id", "1"));
                 value1.add( new BasicNameValuePair("type", "1"));
-                value1.add( new BasicNameValuePair("grade", "1"));
+                value1.add( new BasicNameValuePair("grade", "0"));
                 value1.add( new BasicNameValuePair("number", "1"));
                 value1.add( new BasicNameValuePair("sentence", requestData.get("question")));
                 value1.add( new BasicNameValuePair("right_answer", requestData.get("answer")));
                 value1.add( new BasicNameValuePair("wrong_answer1", requestData.get("incorrect1")));
                 value1.add( new BasicNameValuePair("wrong_answer2", requestData.get("incorrect2")));
                 value1.add( new BasicNameValuePair("wrong_answer3", requestData.get("incorrect3")));
-                value1.add( new BasicNameValuePair("description", "012345"));
+                value1.add( new BasicNameValuePair("description", "NotDescription"));
                 value1.add( new BasicNameValuePair("public_flag", "1"));
                 value1.add( new BasicNameValuePair("category_id", requestData.get("category")));
                 value1.add( new BasicNameValuePair("item", "1"));
