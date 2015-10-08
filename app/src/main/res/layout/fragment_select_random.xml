@@ -20,16 +20,16 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="135dp"
-                android:id="@+id/sc_img02"
+                android:id="@+id/sr_img02"
                 android:src="@drawable/pose_ganbarou_man"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/sc_img01"
-                android:layout_toEndOf="@+id/sc_img01" />
+                android:layout_toRightOf="@+id/sr_img01"
+                android:layout_toEndOf="@+id/scrimg01" />
 
             <ImageView
                 android:layout_width="160dp"
                 android:layout_height="125dp"
-                android:id="@+id/sc_img01"
+                android:id="@+id/sr_img01"
                 android:src="@drawable/comment01"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_marginLeft="56dp"
