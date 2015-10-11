@@ -173,7 +173,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 // パラメータの設定
                 ArrayList<NameValuePair> value2 = new ArrayList<NameValuePair>();
                 value2.add( new BasicNameValuePair("kentei_id", "4"));
-                value2.add( new BasicNameValuePair("employ", "2013"));
+//                value2.add( new BasicNameValuePair("employ", "2013"));
                 value2.add( new BasicNameValuePair("public_flag", "0"));
 //                value2.add( new BasicNameValuePair("grade", "0"));
                 value2.add( new BasicNameValuePair("category_id", requestData.get("category_id")));
@@ -226,7 +226,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 // パラメータの設定
                 ArrayList<NameValuePair> value3 = new ArrayList<NameValuePair>();
                 value3.add( new BasicNameValuePair("kentei_id", "4"));
-                value3.add( new BasicNameValuePair("employ", "2013"));
+//                value3.add( new BasicNameValuePair("employ", "2013"));
                 value3.add( new BasicNameValuePair("public_flag", "0"));
 //                value3.add( new BasicNameValuePair("grade", "0"));
 //                value3.add( new BasicNameValuePair("category_id", "1"));
@@ -360,7 +360,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
                 HttpPost post6 = new HttpPost("http://sakumon.jp/app/LK_API/problems/add.json");
                 // パラメータの設定
                 ArrayList<NameValuePair> value6 = new ArrayList<NameValuePair>();
-                value6.add( new BasicNameValuePair("kentei_id", "6"));
+                value6.add( new BasicNameValuePair("kentei_id", "4"));
                 value6.add( new BasicNameValuePair("user_id", "1"));
                 value6.add( new BasicNameValuePair("type", "2"));
                 value6.add( new BasicNameValuePair("grade", "1"));
@@ -412,7 +412,7 @@ public class HttpAsyncTaskLoader extends AsyncTaskLoader<HashMap<String, String>
 
                 // パラメータの設定
                 ArrayList<NameValuePair> value7 = new ArrayList<NameValuePair>();
-                value7.add( new BasicNameValuePair("kentei_id", "6"));
+                value7.add( new BasicNameValuePair("kentei_id", "4"));
                 value7.add( new BasicNameValuePair("employ", "0"));
                 value7.add( new BasicNameValuePair("public_flag", "1"));
 //                value7.add( new BasicNameValuePair("grade", "0"));
