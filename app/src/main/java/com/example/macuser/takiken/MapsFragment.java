@@ -249,6 +249,7 @@ public class MapsFragment extends Fragment  implements LocationListener, LoaderM
             MarkerOptions options = new MarkerOptions();// ピンの設定
             options.position(new LatLng(latitude, longitude));// ピンの場所を指定
             options.title(spotName);// マーカーの吹き出しの設定
+            options.snippet("ここをタッチして下さい！");// タイトルの下に文字を設定
             mMap.addMarker(options);// ピンの設置
         }
 
