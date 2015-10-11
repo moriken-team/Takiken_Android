@@ -18,8 +18,20 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginTop="30dp">
+                android:layout_height="160dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="150dp"
+                    android:id="@+id/qaa_img01"
+                    android:src="@drawable/comment01"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="29dp" />
 
                 <ImageView
                     android:layout_width="100dp"
@@ -27,20 +39,10 @@
                     android:id="@+id/qaa_img02"
                     android:src="@drawable/ouen_woman"
                     android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@+id/qaa_img01"
-                    android:layout_toEndOf="@+id/qaa_img01" />
-
-                <ImageView
-                    android:layout_width="160dp"
-                    android:layout_height="125dp"
-                    android:id="@+id/qaa_img01"
-                    android:src="@drawable/comment02"
-                    android:layout_gravity="center_horizontal|top"
-                    android:layout_marginLeft="56dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="43dp"
+                    android:layout_marginEnd="43dp" />
 
             </RelativeLayout>
 
@@ -51,7 +53,6 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bunbougu_fusen"
                 android:spinnerMode="dialog"
-                android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
                 android:paddingTop="30dp"
                 android:paddingLeft="70dp" />
