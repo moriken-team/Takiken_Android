@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -51,6 +52,9 @@ public class SelectCategoryFragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_category, container, false);
+
+        TextView  explanation = (TextView) view.findViewById(R.id.sc_category_txt);
+        explanation.setText("カテゴリを以下から選択して下さい");
 
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成

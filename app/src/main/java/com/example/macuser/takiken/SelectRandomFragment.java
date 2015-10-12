@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -52,6 +53,9 @@ public class SelectRandomFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_random, container, false);
+
+        TextView explanation = (TextView) view.findViewById(R.id.sr_random_txt);
+        explanation.setText("問題数を以下から選択して下さい");
 
         /* ---------- START ドロップダウンの表示設定 ---------- */
         // Adapterの作成
