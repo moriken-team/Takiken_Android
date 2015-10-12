@@ -65,20 +65,27 @@ public class MainActivity extends ActionBarActivity
     }
 
     // サイドバーのタッチ位置を定数に代入
-    public final static int Home = 0;
-    public final static int ProblemAnswer = 1;
-    public final static int MakingProblem = 2;
-    public final static int Maps = 3;
+
+    // HOME画面が未実装のためコメントアウト
+    // public final static int Home = 0;
+
+    public final static int ProblemAnswer = 0;
+    public final static int MakingProblem = 1;
+    public final static int Maps = 2;
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(position == Home) {// HOME
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, HomeFragment.newInstance(position + 1))
-                    .commit();
-        }else if(position == ProblemAnswer) {// 問題解答
+
+        // HOME画面が未実装のためコメントアウト
+        //  if(position == Home) {// HOME
+        //      fragmentManager.beginTransaction()
+        //              .replace(R.id.container, HomeFragment.newInstance(position + 1))
+        //              .commit();
+        //  }
+
+        if(position == ProblemAnswer) {// 問題解答
             fragmentManager.beginTransaction()
                     .replace(R.id.container, QuizAnswerFragment.newInstance(position + 1))
                     .commit();
@@ -102,9 +109,12 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number - 1) {
-            case Home:
-                mTitle = getString(R.string.title_home);
-                break;
+
+            // HOME画面が未実装のためコメントアウト
+            // case Home:
+            //    mTitle = getString(R.string.title_home);
+            //    break;
+
             case ProblemAnswer:
                 mTitle = getString(R.string.title_problem_answer);
                 break;

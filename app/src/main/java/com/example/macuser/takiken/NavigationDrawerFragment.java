@@ -102,7 +102,10 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_home),
+
+                        // HOME画面が未実装のためコメントアウト
+                        // getString(R.string.title_home),
+
                         getString(R.string.title_problem_answer),
                         getString(R.string.title_making_problem),
                         getString(R.string.title_map),
