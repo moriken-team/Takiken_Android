@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity
 //        }else if(position == Maps) {// たきざわMAP
 //            Intent intent = new Intent(MainActivity.this, MapsActivity.class);// どのクラスを対象にするか
 //            startActivity(intent);// 画面遷移
-        }else if(position == Maps) {// 問題作成
+        }else if(position == Maps) {// MAP
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MapsFragment.newInstance(position + 1))
                     .commit();
