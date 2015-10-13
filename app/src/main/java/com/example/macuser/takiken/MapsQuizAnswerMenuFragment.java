@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -51,6 +52,9 @@ public class MapsQuizAnswerMenuFragment extends Fragment implements LoaderManage
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_maps_quiz_answer_menu, container, false);
+
+        TextView explanation = (TextView) view.findViewById(R.id.map_qam_explanation);
+        explanation.setText("ここのスポットで作成された\n問題が解答できます！");
 
         Log.v("-------------test",getArguments().getString("spotId"));
 

@@ -50,7 +50,6 @@
                 <TextView android:id="@+id/map_qam_explanation"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="@string/spot_quiz_start_txt"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:inputType="text|textMultiLine" />
